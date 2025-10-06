@@ -1,0 +1,266 @@
+---
+title: "co2_exponential_methods"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(forecast)
+source("utils.R")
+```
+
+## Load & preprocess data.
+
+```{r}
+# load & preprocess data
+splits <- load_and_split(co2, freq = 12, val_freq= 2, test_freq= 1, verbose = FALSE)
+```
+
+## SES model.
+
+### Fit & predict validation data.
+
+```{r}
+# fit & predict validation data
+ses_model <- ses(splits$train,h=12)
+ses_pred_val <- ses_model$mean
+cat("=== SES - Parameters ===\n")
+cat("Alpha:", ses_model$model$par["alpha"], "\n")
+```
+
+### Evaluation in-sample.
+
+```{r}
+# eval in-sample
+cat("=== SES - Evaluation in-sample ===\n")
+cat("AIC:", ses_model$model$aic, "\n")
+cat("BIC:", ses_model$model$bic, "\n")
+cat("Others:", "\n")
+round(accuracy(ses_model), 2)
+
+```
+
+### Evaluation on validation data.
+
+```{r}
+# eval validation data
+eval_pred(ses_pred_val, splits$val, model_name = "SES", return_metrics = FALSE)
+```
+
+### Plot prediction of validation data.
+
+```{r}
+# plot prediction of validation data
+plot_pred_val(splits$train, splits$val, ses_pred_val, zoom_months=3, model_name="SES")
+```
+
+### Predict test data.
+
+```{r}
+# predict test data
+ses_model_final <- ses(splits$train_final, h=12)
+ses_pred_test <- ses_model_final$mean
+
+# save prediction to csv
+save_predictions(ses_pred_test, "ses_pred_test.csv", colname = "ses_prediction")
+
+# print parameters
+cat("\n=== SES - Parameters ===\n")
+cat("Alpha:", ses_model_final$model$par["alpha"], "\n")
+```
+
+### Plot prediction of test data.
+
+```{r}
+# plot prediction of test data
+plot_pred_test(splits$train_final, ses_pred_test, zoom_months=3, model_name = "SES")
+```
+
+## Damped non seasonal Holt-Winters.
+
+### Fit & predict validation data.
+
+```{r}
+# fit & predict validation data.
+holt_model <- holt(splits$train, h=12, damped=TRUE)
+holt_pred_val <- holt_model$mean
+
+cat("=== Damped non seasonal HW - Parameters ===\n")
+cat("Alpha:", holt_model$model$par["alpha"], "\n")
+cat("Beta:", holt_model$model$par["beta"], "\n")
+```
+
+### Evaluation in-sample.
+
+```{r}
+# eval in-sample
+cat("=== Damped non seasonal HW - Evaluation in-sample ===\n")
+cat("AIC:", holt_model$model$aic, "\n")
+cat("BIC:", holt_model$model$bic, "\n")
+cat("Others:", "\n")
+round(accuracy(holt_model), 2)
+```
+
+### Evaluation on validation data.
+
+```{r}
+# evaluation on validation data
+eval_pred(holt_pred_val, splits$val, model_name = "Damped non seasonal HW", return_metrics = FALSE)
+
+```
+
+### Plot prediction of validation data.
+
+```{r}
+# plot prediction of validation data
+plot_pred_val(splits$train, splits$val, holt_pred_val, zoom_months=3, model_name="Damped non seasonal HW")
+```
+
+### Predict test data.
+
+```{r}
+# predict test data
+holt_model_final <- holt(splits$train_final, h=12, damped=TRUE)
+holt_pred_test <- holt_model_final$mean
+
+# save prediction to csv
+save_predictions(holt_pred_test, "holt_pred_test.csv", colname = "holt_prediction")
+
+# print parameters
+cat("\n=== Damped non seasonal HW - Parameters ===\n")
+cat("Alpha:", holt_model_final$model$par["alpha"], "\n")
+cat("Beta:", holt_model_final$model$par["beta"], "\n")
+```
+
+### Plot prediction of test data.
+
+```{r}
+# plot prediction of test data
+plot_pred_test(splits$train_final, holt_pred_test, zoom_months=3, model_name = "Damped non seasonal HW")
+```
+
+## Damped additive seasonal Holt-Winters.
+
+### Fit & predict validation data.
+
+```{r}
+# fit & predict validation data
+hw_add_model <- hw(splits$train, seasonal="additive", damped=TRUE, h=12)
+hw_add_pred_val <- hw_add_model$mean
+cat("=== Damped HW additive - Parameters ===\n")
+cat("Alpha:", hw_add_model$model$par["alpha"], "\n")
+cat("Beta:", hw_add_model$model$par["beta"], "\n")
+cat("Gamma:", hw_add_model$model$par["gamma"], "\n")
+```
+
+### Evaluation in-sample.
+
+```{r}
+# evaluation in-sample
+cat("=== Evaluation in-sample ===\n")
+cat("AIC:", hw_add_model$model$aic, "\n")
+cat("BIC:", hw_add_model$model$bic, "\n")
+cat("Others:", "\n")
+round(accuracy(hw_add_model), 2)
+```
+
+### Evaluation on validation data.
+
+```{r}
+# evaluation on validation data.
+eval_pred(hw_add_pred_val, splits$val, model_name="Damped HW additive", return_metrics = FALSE)
+```
+
+### Plot prediction of validation data.
+
+```{r}
+# plot prediction of validation data
+plot_pred_val(splits$train, splits$val, hw_add_pred_val, zoom_months=3, model_name="Damped HW additive")
+```
+
+### Predict test data.
+
+```{r}
+# predict test data
+hw_add_model_final <- hw(splits$train_final, seasonal="additive", damped=TRUE, h=12)
+hw_add_pred_test <- hw_add_model_final$mean
+
+# save prediction to csv
+save_predictions(hw_add_pred_test, filename="hw_add_pred_test.csv")
+
+# print parameters
+cat("\n=== Damped HW additive - Parameters ===\n")
+cat("Alpha:", hw_add_model_final$model$par["alpha"], "\n")
+cat("Beta:", hw_add_model_final$model$par["beta"], "\n")
+cat("Gamma:", hw_add_model_final$model$par["gamma"], "\n")
+```
+
+### Plot prediction of test data.
+
+```{r}
+# plot prediction of test data
+plot_pred_test(splits$train_final, hw_add_pred_test, zoom_months=3, model_name = "Damped HW additive")
+```
+
+## Damped multiplicative seasonal Holt-Winters.
+
+### Fit & predict validation data.
+
+```{r}
+# fit & predict validation data
+hw_mult_model <- hw(splits$train, seasonal="multiplicative", damped=TRUE, h=12)
+hw_mult_pred_val <- hw_mult_model$mean
+cat("=== Damped HW mult. - Parameters ===\n")
+cat("Alpha:", hw_mult_model$model$par["alpha"], "\n")
+cat("Beta:", hw_mult_model$model$par["beta"], "\n")
+cat("Gamma:", hw_mult_model$model$par["gamma"], "\n")
+```
+
+### Evaluation in-sample.
+
+```{r}
+# evaluation in-sample
+cat("=== Damped HW mult. - Evaluation in-sample ===\n")
+cat("AIC:", hw_mult_model$model$aic, "\n")
+cat("BIC:", hw_mult_model$model$bic, "\n")
+cat("Others:", "\n")
+round(accuracy(hw_mult_model), 2)
+```
+
+### Evaluation on validation data.
+
+```{r}
+# evaluation on validation data
+eval_pred(hw_mult_pred_val, splits$val, model_name = "Damped HW mult.", return_metrics = FALSE)
+```
+
+### Plot prediction of validation data.
+
+```{r}
+# plot prediction of validation data
+plot_pred_val(splits$train, splits$val, hw_mult_pred_val, zoom_months=3, model_name="Damped HW mult.")
+```
+
+### Predict test data.
+
+```{r}
+# predict test data
+hw_mult_model_final <- hw(splits$train_final, seasonal="multiplicative", damped=TRUE, h=12)
+hw_mult_pred_test <- hw_mult_model_final$mean
+
+# save prediction to csv
+save_predictions(hw_mult_pred_test, filename="hw_mult_pred_test.csv")
+
+# print parameters
+cat("=== Damped HW mult. - Parameters ===\n")
+cat("Alpha:", hw_mult_model_final$model$par["alpha"], "\n")
+cat("Beta:", hw_mult_model_final$model$par["beta"], "\n")
+cat("Gamma:", hw_mult_model_final$model$par["gamma"], "\n")
+```
+
+### Plot prediction of test data.
+
+```{r}
+# plot prediction of test data
+plot_pred_test(splits$train_final, hw_mult_pred_test, zoom_months = 3, model_name ="Damped HW mult.")
+```

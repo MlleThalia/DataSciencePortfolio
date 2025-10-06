@@ -1,0 +1,78 @@
+---
+title: "CO2_nnar_models"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(forecast)
+source("utils.R")
+```
+
+## Load & preprocess data.
+
+```{r}
+# load & preprocess data
+splits <- load_and_split(co2, freq = 12, val_freq = 2, test_freq= 1, verbose = FALSE)
+```
+
+## NNAR.
+
+### Hyperparameters to test.
+
+```{r}
+# hyperparams to test
+nnar_hyperparam_grid <- expand.grid(
+  p = c(1, 2, 3),      # nb de lags auto-régressifs
+  P = c(1, 2, 3),      # lags saisonniers
+  size = c(5, 10)      # nb de neurones dans les hidden layers
+)
+
+```
+
+### Fit & predict validation data.
+
+```{r}
+# fit & predict validation data.
+nnar_results <- grid_search_nnar(
+    splits$train, splits$val, 
+    hyperparam_grid=nnar_hyperparam_grid
+  )
+
+cat("NNAR best RMSE on validation data:", round(nnar_results$best_rmse, 3), "\n")
+cat("NNAR best hyperparameters:", toString(nnar_results$best_hyperparams), "\n")
+```
+
+### Evaluation on validation data.
+
+```{r}
+# evaluation on validation data
+eval_pred(nnar_results$best_pred_val, splits$val, model_name="NNAR", return_metrics=FALSE)
+```
+
+### Plot prediction of validation data.
+
+```{r}
+# plot prediction of validation data
+plot_pred_val(splits$train, splits$val, nnar_results$best_pred_val, zoom_months=3, model_name="NNAR")
+```
+
+### Predict test data.
+
+```{r}
+# re train model on train+val data with the best hyperparams selected
+nnar_model_final <- train_nnar_fn(splits$train_final, params=nnar_results$best_hyperparams, repeats=1, xreg=NULL)
+
+# predict test data
+nnar_pred_test <- forecast(nnar_model_final, h=length(splits$test))$mean
+nnar_pred_test <- ts(nnar_pred_test, frequency=frequency(splits$test))
+
+# save prediction to csv
+save_predictions(nnar_pred_test, filename="nnar_pred_test.csv")
+```
+
+### Plot prediction of test data.
+
+```{r}
+plot_pred_test(splits$train_final, nnar_pred_test, zoom_months=3, model_name="NNAR")
+```

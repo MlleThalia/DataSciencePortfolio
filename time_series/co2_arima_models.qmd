@@ -1,0 +1,161 @@
+---
+title: "co2_arima_models"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(forecast)
+source("utils.R")
+```
+
+## Load & preprocess data.
+
+```{r}
+# load & preprocess data
+splits <- load_and_split(co2, freq = 12, val_freq = 2, test_freq= 1, verbose = FALSE)
+```
+
+## Stationarity.
+
+### STL.
+
+```{r}
+# STL
+autoplot(decompose(splits$train, type="additive")) + 
+  xlab('Temps') +
+  ggtitle("Décomposition de la série")
+```
+
+### Seasonal differencing.
+
+```{r}
+# différenciation saisonnière.
+train_diff <- diff(splits$train, lag=12, differences=1)
+
+par(mfrow=c(2,1), mar=c(4,4,2,1))
+
+plot(splits$train, main="Série originale", ylab="ppm")
+
+plot(train_diff, main="Série différenciée (lag=12)", ylab="ppm")
+
+```
+
+La série obtenue n'est pas totalement stationnaire visiblement. Nous allons la différencier à nouveau cette fois avec un lag=1.
+
+```{r}
+# différenciation saisonnière.
+diff_train_diff <- diff(train_diff, lag=1, differences=1)
+
+par(mfrow=c(2,1), mar=c(4,4,2,1))
+
+plot(splits$train, main="Série originale", ylab="ppm")
+
+plot(diff_train_diff, main="Série doublement différenciée (lag=1)", ylab="ppm")
+
+par(mfrow=c(1,1))
+```
+
+A l'oeil nu, la série doublement différenciée est stationnaire.
+
+### Test white noise.
+
+```{r}
+# Test de Ljung-Box
+box_test <- Box.test(diff_train_diff, lag=12, type="Ljung-Box")
+
+cat("Test de Ljung-Box:\n")
+cat("p-value:", box_test$p.value, "\n")
+if(box_test$p.value < 0.05) {
+  cat("La série différenciée n'est pas un bruit blanc (il reste de l'autocorrélation)\n")
+} else {
+  cat("La série différenciée est un bruit blanc\n")
+}
+```
+
+La série et stationnaire mais n'est pas un bruit blanc (p-value \< 0.05), il reste donc de la dépendance à modéliser avec des modèles AR/MA.
+
+## Correlograms.
+
+```{r}
+# acf & pacf
+acf(diff_train_diff, lag.max=12, main="ACF sur série diff(diff(lag=12), lag=1)")
+pacf(diff_train_diff, lag.max=12, main="PACF sur série diff(diff(lag=12), lag=1)")
+```
+
+On observe une décroissance exponentielle légère sur le PACF et une significativité de l'autocorrélation en lag=2 et en lag=12 donc on va tester un SARIMA(0, 1, 1)(0, 1, 1). Au fur et à mesure qu'il y aura un significativité dans les résidus nous allons ajuster le modèle.
+
+## SARIMA model.
+
+### Fit & predict validation data.
+
+```{r}
+# fit & predict validation data
+sarima_model <- Arima(splits$train, order = c(0,1,9), seasonal = c(0,1,1)) 
+sarima_pred_val <- forecast(sarima_model, h = 12)$mean
+
+# print parameters
+cat("=== SARIMA - Parameters ===\n")
+cat("MA9:", sarima_model$coef["ma9"], "\n")
+cat("SMA1:", sarima_model$coef["sma1"], "\n")
+```
+
+### Check residuals.
+
+```{r}
+# Plot residuals
+sarima_model %>% residuals() %>% ggtsdisplay()
+```
+
+```{r}
+checkresiduals(sarima_model)
+```
+
+On voit que le bruit est blanc donc nous avons capter toute l'autocorrélation.
+
+### Evaluation in-sample.
+
+```{r}
+# evaluation in-sample.
+cat("=== SARIMA - Evaluation in-sample ===\n")
+cat("AIC:", sarima_model$aic, "\n")
+cat("BIC:", sarima_model$bic, "\n")
+cat("Others:", "\n")
+round(accuracy(sarima_model), 2)
+```
+
+### Evaluation on validation data.
+
+```{r}
+eval_pred(sarima_pred_val, splits$val, model_name="SARIMA")
+```
+
+### Plot prediction of validation data.
+
+```{r}
+plot_pred_val(splits$train, splits$val, sarima_pred_val, zoom_months=3, model_name="SARIMA")
+```
+
+### Predict test data.
+
+```{r}
+# predict test data
+sarima_model_final <- Arima(splits$train_final, order = c(1,1,9), seasonal = c(0,1,1))
+sarima_pred_test <- forecast(sarima_model_final, h = 12)$mean
+
+# save prediction to csv
+save_predictions(sarima_pred_test, filename="sarima_pred_test.csv")
+
+# print parameters
+cat("=== SARIMA - Parameters ===\n")
+cat("AR1:", sarima_model$coef["ar1"], "\n")
+cat("MA9:", sarima_model$coef["ma9"], "\n")
+cat("SMA1:", sarima_model$coef["sma1"], "\n")
+```
+
+### Plot prediction of test data.
+
+```{r}
+# plot prediction of test data
+plot_pred_test(splits$train_final, sarima_pred_test, zoom_months=3, model_name="SARIMA")
+```

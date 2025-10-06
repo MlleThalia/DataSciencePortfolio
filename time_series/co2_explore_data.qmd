@@ -1,0 +1,53 @@
+---
+title: "co2_explore_data"
+format: pdf
+editor: visual
+---
+
+## Libraries.
+
+```{r}
+library(ggplot2)
+library(forecast)
+```
+
+### Descriptive statistics.
+
+```{r}
+# summary
+summary(co2)
+```
+
+```{r}
+# Série complète du co2
+plot(co2, main = "Mesure mensuelle de Co2", 
+     xlab = "Temps", ylab = "ppm",
+     col = "darkblue", lwd = 0.5)
+
+```
+
+```{r}
+# seasonal plot journalier
+seasonplot(co2,
+           col = rainbow(50),
+           type="l",
+           year.labels = TRUE,
+           main = "Mesure mensuelle de Co2 - seasonal plot annuel",
+           ylab = "ppm", xlab = "Mois")
+```
+
+```{r}
+# autocorrélation
+autocorr <- acf(co2, type = "cor", plot = FALSE, lag.max=12)
+plot(autocorr, main = "ACF - Co2 - lag.max = 12")
+Box.test(co2,lag=12,type="Box-Pierce")
+
+```
+
+```{r}
+# partial autocorrélation
+pautocorr <- pacf(co2, type = "cor", plot = FALSE, lag.max=12)
+plot(pautocorr, , main = "PACF - Co2 - lag.max = 12")
+```
+
+Les mesures de co2 présentent une tendance bien marquée et une saisonnalité de 12 mois.

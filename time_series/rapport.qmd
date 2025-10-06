@@ -1,0 +1,73 @@
+---
+title: "rapport"
+format: pdf
+editor: visual
+---
+
+## Introduction
+
+Ce rapport présente une analyse simple de la série temporelle **co₂** et compare différents modèles de prévision.
+
+## Méthodologie
+
+Les modèles testés incluent :
+
+\- Modèles de lissage exponentiel
+
+\- Modèles ARIMA
+
+ - Modèles de réseaux de neurones autorégressifs
+
+## Résultats
+
+Nous allons présenter les résultats du meilleur modèle de chaque famille. Comme métrique, nous allons comparer les RMSE
+
+```{r}
+# load & preprocess data
+splits <- load_and_split(co2, freq = 12, val_freq= 2, test_freq= 1, verbose = FALSE)
+```
+
+```{r}
+library(forecast)
+source("utils.R")
+
+#Damped multiplicative seasonal Holt-Winters.
+hw_mult_model <- hw(splits$train, seasonal="multiplicative", damped=TRUE, h=12)
+hw_mult_pred_val <- hw_mult_model$mean
+hw_mult_metrics <- eval_pred(hw_mult_pred_val, splits$val, model_name = "Damped HW mult.", return_metrics = TRUE)
+
+#SARIMA model.
+sarima_model <- Arima(splits$train, order = c(0,1,9), seasonal = c(0,1,1)) 
+sarima_pred_val <- forecast(sarima_model, h = 12)$mean
+sarima_metrics <- eval_pred(sarima_pred_val, splits$val, model_name="SARIMA", return_metrics = TRUE)
+
+#NNAR.
+nnar_hyperparam_grid <- expand.grid(
+  p = 3,     
+  P = 2,      
+  size = 10      
+)
+nnar_model <- train_nnar_fn(splits$train, params=nnar_hyperparam_grid, repeats=1, xreg=NULL)
+nnar_pred_val <- forecast(nnar_model, h=12)$mean
+nnar_metrics <- eval_pred(nnar_pred_val, splits$val, model_name="NNAR", return_metrics = TRUE)
+
+# Combiner les résultats dans un tableau
+results <- data.frame(
+  Modèle = c("Damped Hw mult", "SARIMA", "NNAR"),
+  RMSE = c(hw_mult_metrics$rmse, sarima_metrics$rmse, nnar_metrics$rmse)
+)
+knitr::kable(results, caption="Comparaison des performances des modèles")
+```
+
+## Conclusion
+
+Le meilleur modèle est le modèle de lissage exponentiel multiplicatif.
+
+```{r}
+# predict test data
+hw_mult_model_final <- hw(splits$train_final, seasonal="multiplicative", damped=TRUE, h=12)
+hw_mult_pred_test <- hw_mult_model_final$mean
+
+# plot prediction of test data
+plot_pred_test(splits$train_final, hw_mult_pred_test, zoom_months = 3, model_name ="Damped HW mult.")
+```
