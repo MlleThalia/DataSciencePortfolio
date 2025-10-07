@@ -1,6 +1,6 @@
 ---
 title: "co2_arima_models"
-format: pdf
+format: html
 editor: visual
 ---
 

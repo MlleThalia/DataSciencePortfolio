@@ -1,6 +1,6 @@
 ---
 title: "co2_exponential_methods"
-format: pdf
+format: html
 editor: visual
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "rapport"
-format: pdf
+format: html
 editor: visual
 ---
 
@@ -16,21 +16,20 @@ Les modèles testés incluent :
 
 \- Modèles ARIMA
 
- - Modèles de réseaux de neurones autorégressifs
+-   Modèles de réseaux de neurones autorégressifs
 
 ## Résultats
 
 Nous allons présenter les résultats du meilleur modèle de chaque famille. Comme métrique, nous allons comparer les RMSE
 
 ```{r}
+library(forecast)
+source("utils.R")
 # load & preprocess data
 splits <- load_and_split(co2, freq = 12, val_freq= 2, test_freq= 1, verbose = FALSE)
 ```
 
 ```{r}
-library(forecast)
-source("utils.R")
-
 #Damped multiplicative seasonal Holt-Winters.
 hw_mult_model <- hw(splits$train, seasonal="multiplicative", damped=TRUE, h=12)
 hw_mult_pred_val <- hw_mult_model$mean
@@ -70,4 +69,8 @@ hw_mult_pred_test <- hw_mult_model_final$mean
 
 # plot prediction of test data
 plot_pred_test(splits$train_final, hw_mult_pred_test, zoom_months = 3, model_name ="Damped HW mult.")
+```
+
+```{r}
+quarto::quarto_render("rapport.qmd", output_format = "gfm")
 ```

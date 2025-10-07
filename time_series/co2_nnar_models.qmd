@@ -1,6 +1,6 @@
 ---
 title: "CO2_nnar_models"
-format: pdf
+format: html
 editor: visual
 ---
 
