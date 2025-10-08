@@ -1,3 +1,10 @@
+import subprocess
+from pathlib import Path
+import os
+
+##################################################################
+###########  Change dataframe cell format
+
 def format_result(cell, show_test=False):
     """
     Formate une cellule contenant (test_acc, mean_acc, std_acc)
@@ -8,6 +15,9 @@ def format_result(cell, show_test=False):
         return f"{test:.1f}/{mean:.1f}±{std:.1f}"
     else:
         return f"{mean:.1f}±{std:.1f}"
+
+##################################################################
+########### Convert dataframe to a latex table
     
 def results_to_latex(df, caption="Model comparison", label="tab:results", show_test=False):
     df_latex = df.copy()
@@ -22,8 +32,8 @@ def results_to_latex(df, caption="Model comparison", label="tab:results", show_t
         label=label
     )
 
-import subprocess
-from pathlib import Path
+##################################################################
+########### Generate .pdf file from latex template
 
 def inject_table_in_template(latex_table, template_path="template.tex", output_pdf="results.pdf"):
     """
@@ -61,3 +71,21 @@ def inject_table_in_template(latex_table, template_path="template.tex", output_p
         f = tex_file.with_suffix(ext)
         if f.exists():
             f.unlink()
+
+##################################################################
+########### Remove .pdf file
+
+def remove_pdf_if_exists(filepath):
+    """
+    Supprime le fichier PDF s'il existe.
+    
+    Paramètres
+    ----------
+    filepath : str
+        Chemin complet ou relatif du fichier PDF.
+    """
+    if os.path.isfile(filepath):
+        os.remove(filepath)
+        print(f"✅ Fichier supprimé : {filepath}")
+    else:
+        print(f"ℹ️ Aucun fichier trouvé à cet emplacement : {filepath}")
