@@ -1,0 +1,57 @@
+\documentclass[a4paper,12pt]{article}
+
+% Packages utiles
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{lscape} % pour tourner la page si besoin (optionnel)
+\usepackage{float}  % pour bien positionner les tableaux
+
+% Marges
+\geometry{margin=1in}
+
+\begin{document}
+
+\vspace{1cm}
+
+\centering
+
+\begin{table}
+\caption{Decision tree bagging comparison}
+\label{tab:results}
+\begin{tabular}{lcccccc}
+\toprule
+Dataset &  n = 1.0 &  n = 5.0 &  n = 10.0 &  n = 20.0 &  n = 50.0 &  n = 100.0 \\
+\midrule
+abalone20 & 98.25 & 99.28 & 99.12 & 99.04 & 99.12 & 99.36 \\
+abalone17 & 96.97 & 98.56 & 98.64 & 98.64 & 98.64 & 98.64 \\
+yeast6 & 97.31 & 98.21 & 98.21 & 98.21 & 98.43 & 98.43 \\
+wine4 & 93.54 & 96.04 & 96.46 & 96.46 & 96.25 & 96.25 \\
+libras & 94.44 & 98.15 & 97.22 & 97.22 & 96.30 & 96.30 \\
+pageblocks & 96.77 & 97.38 & 97.20 & 97.44 & 97.62 & 97.69 \\
+yeast3 & 93.72 & 93.72 & 95.74 & 95.96 & 95.74 & 95.74 \\
+abalone8 & 79.19 & 82.78 & 84.61 & 84.61 & 85.25 & 85.33 \\
+segmentation & 96.10 & 97.55 & 98.27 & 97.26 & 97.69 & 97.40 \\
+hayes & 100.00 & 100.00 & 100.00 & 100.00 & 100.00 & 100.00 \\
+vehicle & 90.55 & 93.31 & 94.49 & 95.28 & 94.49 & 95.67 \\
+german & 69.33 & 74.00 & 74.33 & 77.67 & 78.33 & 79.00 \\
+glass & 81.54 & 87.69 & 84.62 & 84.62 & 84.62 & 84.62 \\
+wine & 92.59 & 92.59 & 94.44 & 92.59 & 92.59 & 92.59 \\
+pima & 69.70 & 76.62 & 75.32 & 77.49 & 75.32 & 76.19 \\
+iono & 89.62 & 90.57 & 92.45 & 90.57 & 94.34 & 94.34 \\
+autompg & 88.14 & 91.53 & 91.53 & 91.53 & 93.22 & 94.07 \\
+balance & 87.77 & 88.30 & 88.30 & 90.96 & 91.49 & 92.55 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\vfill
+\begin{center}
+    \textit{Document généré automatiquement via script Python.}
+\end{center}
+
+\end{document}
