@@ -83,10 +83,15 @@ def cross_validation(X, Y, hyperparams_grid, model_method, test_size=0.3, k_fold
 
 def make_decision_tree_bagging(n):
 
+    """
+    Retourne une pipeline d'une méthode de bagging avec comme learner,
+    une DecisionTree simple.
+    """
+
     return make_pipeline(
         StandardScaler(),
         BaggingClassifier(
-            base_estimator=DecisionTreeClassifier(random_state=42),
+            estimator=DecisionTreeClassifier(random_state=42),
             n_estimators=n,
             random_state=42,
             n_jobs=-1
@@ -97,6 +102,11 @@ def make_decision_tree_bagging(n):
 ########### DecisionTree Bagging Fit
 
 def decion_tree_bagging_fit(X, Y, n, test_size=0.3, k_fold=5):
+
+    """
+    Splitte les données et apprend un modèle de bagging basé sur un learner
+    Decision Tree.
+    """
 
     # Split train/test global
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size, stratify=Y, random_state=42)
@@ -117,6 +127,10 @@ def decion_tree_bagging_fit(X, Y, n, test_size=0.3, k_fold=5):
 ########### Sampling methods
 
 def apply_sampling_methods(X, y, method="random"):
+
+    """
+    Apprend la méthode de sampling choisie.
+    """
     if method == "random":
         sampler = RandomOverSampler(random_state=42)
     elif method == "smote":
@@ -131,6 +145,10 @@ def apply_sampling_methods(X, y, method="random"):
 ########### Cross validation
 
 def imblearn_cross_validation(X, Y, hyperparams_grid, model_method, sampling_method, test_size=0.3, k_fold=5):
+
+    """
+    Apprend une cross-validation sur les datasets déséquilibrés.s
+    """
 
     # Split train/test global
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size, stratify=Y, random_state=42)

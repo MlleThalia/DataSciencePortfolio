@@ -20,6 +20,11 @@ def format_result(cell, show_test=False):
 ########### Convert dataframe to a latex table
     
 def results_to_latex(df, caption="Model comparison", label="tab:results", show_test=False):
+
+    """
+    Applique le fonction format_result aux cellules du dataframe avant
+    de le convertir en latex
+    """
     df_latex = df.copy()
     for col in df_latex.columns[1:]:
         df_latex[col] = df_latex[col].apply(lambda x: format_result(x, show_test))

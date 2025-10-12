@@ -5,6 +5,10 @@ import numpy as np
 
 def summarize_datasets(X, y):
 
+    """
+    Calcule les différents ratio sur chaque dataset.
+    """
+
     n_samples, n_features = X.shape
     classes, counts = np.unique(y, return_counts=True)
     n_classes = len(classes)
@@ -19,6 +23,10 @@ def summarize_datasets(X, y):
 ########### Datasets splitting
 
 def split_datasets_by_balance(df, sample_threshold=300, imbalance_threshold=0.1):
+
+    """
+    Splitte les datasets selon l'imbalance_ratio.
+    """
     
     # Filtrer les petits datasets
     filtered_df = df[df["nsamples"] >= sample_threshold].copy()
