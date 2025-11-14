@@ -1,0 +1,150 @@
+---
+title: "mixture_model"
+author: "Yayrale AKIBODE"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Titre court de la vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(mixturemodel)
+```
+
+#Introduction
+
+Cette vignette a pour but de décrire l'utilisation du package "mixture_model_AKIBODE". C'est un package qui implémente un modèle de mélange avec K gaussiennes et une loi uniforme qui modélise les outliers.
+
+#Description du modèle
+
+#Installation du package
+
+```{r}
+#install.packages("chemin/vers/ton_package_0.1.0.tar.gz", repos = NULL, type = "source")
+```
+
+- repos = NULL : indique à R que le package est local, pas sur CRAN.
+
+- type = "source" : car .tar.gz est une source (pas binaire).
+
+#Données d'exemple
+
+```{r}
+#data=iris[, -5]
+set.seed(123)
+
+# --- Cluster 1 ---
+x1 <- cbind(rnorm(100, mean = 0, sd = 0.5),
+            rnorm(100, mean = 0, sd = 0.5))
+
+# --- Cluster 2 ---
+x2 <- cbind(rnorm(100, mean = 5, sd = 0.5),
+            rnorm(100, mean = 5, sd = 0.5))
+
+# --- Outlier ---
+outlier <- matrix(c(10, 0), ncol = 2)  # très éloigné des autres points
+
+# --- Jeu de données complet ---
+x <- rbind(x1, x2, outlier)
+colnames(x) <- c("X1", "X2")
+
+normalize_zscore <- function(x) {
+  x_norm <- scale(x)  # centre (mean=0) et réduit (sd=1) chaque colonne
+  return(x_norm)
+}
+
+# Exemple
+x <- normalize_zscore(x)
+
+# --- Visualisation ---
+plot(x, col = "grey40", pch = 19, main = "Données simulées avec un outlier")
+points(outlier[,1], outlier[,2], col = "red", pch = 19, cex = 1.5)
+
+```
+
+#Fonctionnalités principales
+
+##Modélisation
+
+###Modèle
+
+```{r}
+mm_model<-MixtureModel(x, K=3)
+```
+
+###Apprentissage
+
+```{r}
+mm_model<-fit(mm_model)
+```
+
+###Probabilités d'appartenance à chaque cluster: Q
+
+```{r}
+tail(mm_model$proba)
+```
+
+###Paramètres du modèle
+
+```{r}
+tail(mm_model$params)
+```
+
+###Critère BIC
+
+```{r}
+mm_model$bic
+```
+
+##Visualisation
+
+###Visualisation de la vraisemblance
+
+```{r}
+plot(
+  unlist(mm_model$likehood_values),
+  type = "l",                 # "l" pour ligne
+  col = "blue",
+  lwd = 2,
+  xlab = "Itérations",
+  ylab = "Log-vraisemblance",
+  main = "Évolution de la log-vraisemblance (EM)"
+)
+grid()
+```
+
+###Visualisation du choix de K
+
+```{r}
+plot(
+  mm_model$bic_values,
+  type = "p",                 # "l" pour ligne
+  col = "blue",
+  lwd = 2,
+  xlab = "K",
+  ylab = "BIC",
+  main = "Évolution du BIC"
+)
+grid()
+```
+
+###Visualisation des clusters en 2D
+
+```{r}
+library(ggplot2)
+
+ggplot(data = mm_model$data, aes(x=mm_model$data[, 1], y=mm_model$data[, 2], color=mm_model$preds))+
+  geom_point(size=3)
+```
+
+#Interprétation
+
+#Bonnes pratiques
+
+#Références

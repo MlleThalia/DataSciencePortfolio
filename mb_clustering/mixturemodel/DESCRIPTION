@@ -1,0 +1,22 @@
+Package: mixturemodel
+Type: Package
+Title: Implementation of a package that performs Gaussian mixing with outlier
+            detection using a uniform distribution
+Version: 0.1.0
+Authors@R: c(
+    person(
+      given = "Yayrale",
+      family = "AKIBODE",
+      email = "yayrale.akibode@univ-lyon2.fr",
+      role = c("aut", "cre")
+    )
+  )
+Description: This package implements an EM algorithm for mixture models of Gaussian distributions. It also detects outliers by estimating them with a uniform distribution. It includes functions for estimation, selection of the optimal number of clusters, and visualization of the results.
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 4.0)
+Imports: mvtnorm, MCMCpack
+LazyData: true
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 7.3.3

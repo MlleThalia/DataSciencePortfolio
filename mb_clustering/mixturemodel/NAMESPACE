@@ -1,0 +1,9 @@
+
+export(MixtureModel)
+export(fit)
+
+S3method(fit, mixturemodel)
+
+import(mvtnorm)
+import(MCMCpack)
+importFrom(stats, rWishart, runif)
