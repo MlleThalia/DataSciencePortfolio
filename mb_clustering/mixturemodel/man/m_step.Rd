@@ -4,7 +4,7 @@
 \alias{m_step}
 \title{Maximization step}
 \usage{
-m_step(x, Q, K, outlier = FALSE)
+m_step(x, Q, K, outlier = FALSE, min_pk = 1e-06, reg_covar = 1e-06)
 }
 \arguments{
 \item{x}{a matrix}

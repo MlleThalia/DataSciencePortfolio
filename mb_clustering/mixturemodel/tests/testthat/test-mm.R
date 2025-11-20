@@ -1,0 +1,46 @@
+
+test_that("Q ne contient pas de NA", {
+  set.seed(1)
+  X <- readRDS(system.file("testdata/X.rds", package = "mixturemodel"))
+  parameters<-initialization(X, K=2)
+  parameters_outliers<-initialization(X, K=2, outlier=TRUE)
+  Q <- e_step(X, parameters)
+  Q_outliers <- e_step(X, parameters_outliers, outlier=TRUE)
+  expect_false(any(is.na(Q)))
+  expect_false(any(is.na(Q_outliers)))
+})
+
+test_that("la vraisemblance n'est pas un NA", {
+  set.seed(1)
+  X <- readRDS(system.file("testdata/X.rds", package = "mixturemodel"))
+  parameters<-initialization(X, K=2)
+  parameters_outliers<-initialization(X, K=2, outlier=TRUE)
+  likehood_value<-likehood(e_step, X, parameters)
+  likehood_value_outliers<-likehood(e_step, X, parameters_outliers, outlier=TRUE)
+  expect_false(is.na(likehood_value))
+  expect_false(is.na(likehood_value_outliers))
+})
+
+test_that("le bic n'est pas un NA", {
+  set.seed(1)
+  X <- readRDS(system.file("testdata/X.rds", package = "mixturemodel"))
+  parameters<-initialization(X, K=2)
+  parameters_outliers<-initialization(X, K=2, outlier=TRUE)
+  bic_value<-bic(e_step, X, parameters)
+  bic_value_outliers<-bic(e_step, X, parameters_outliers, outlier=TRUE)
+  expect_false(is.na(bic_value))
+  expect_false(is.na(bic_value_outliers))
+})
+
+test_that("parameters ne contient pas de NA", {
+  set.seed(1)
+  X <- readRDS(system.file("testdata/X.rds", package = "mixturemodel"))
+  parameters<-initialization(X, K=2)
+  parameters_outliers<-initialization(X, K=2, outlier=TRUE)
+  Q <- e_step(X, parameters)
+  Q_outliers <- e_step(X, parameters_outliers, outlier=TRUE)
+  new_parameters <- m_step(X, Q, K=2)
+  new_parameters_outliers <- m_step(X, Q_outliers, K=2, outlier=TRUE)
+  expect_false(any(is.na(new_parameters)))
+  expect_false(any(is.na(new_parameters_outliers)))
+})

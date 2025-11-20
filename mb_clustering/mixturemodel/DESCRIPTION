@@ -11,12 +11,16 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: This package implements an EM algorithm for mixture models of Gaussian distributions. It also detects outliers by estimating them with a uniform distribution. It includes functions for estimation, selection of the optimal number of clusters, and visualization of the results.
+Description: This package implements an EM algorithm for mixture models of Gaussian distributions. It also detects outliers by estimating them with a uniform distribution. It includes functions for estimation and selection of the optimal number of clusters.
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports: mvtnorm, MCMCpack
 LazyData: true
-Suggests: knitr, rmarkdown
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
+Config/testthat/edition: 3

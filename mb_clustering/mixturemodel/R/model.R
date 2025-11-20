@@ -9,7 +9,7 @@
 #' @returns None
 #' @export
 #'
-MixtureModel <- function(data, K, initialization_steps=20) {
+MixtureModel <- function(data, K=NULL, initialization_steps=20) {
 
   structure(
     list(
@@ -50,12 +50,16 @@ fit <- function(object) {
 #' @export
 #'
 fit.mixturemodel <- function(object) {
-
   #K_selection
-  bic_values <- k_selection(e_step, m_step, object$data, object$K)
-  optimal_K <- which.max(bic_values)
-  object$bic_values <- bic_values
-  object$optimal_K <- optimal_K
+  if(is.null(object$K)){
+    bic_values <- k_selection(e_step, m_step, object$data)
+    optimal_K <- which.max(bic_values)
+    object$bic_values <- bic_values
+    object$optimal_K <- optimal_K
+  }
+  else{
+    object$optimal_K <-object$K
+  }
   #MixtureModel without outlier
   mixturemodel_without_outlier_em_values <- multistart_em(e_step, m_step, object$data, object$optimal_K, object$initialization_steps, outlier=FALSE)
   mixturemodel_without_outlier_params<-mixturemodel_without_outlier_em_values$parameters

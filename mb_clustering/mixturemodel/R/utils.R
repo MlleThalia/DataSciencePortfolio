@@ -1,4 +1,5 @@
 
+
 #' Gaussian densities
 #'
 #' @param x a matrix

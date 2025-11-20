@@ -4,7 +4,7 @@
 \alias{MixtureModel}
 \title{Constructor function}
 \usage{
-MixtureModel(data, K, initialization_steps = 20)
+MixtureModel(data, K = NULL, initialization_steps = 20)
 }
 \arguments{
 \item{data}{a matrix}

@@ -4,112 +4,315 @@ author: "Yayrale AKIBODE"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Titre court de la vignette}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Mélange gaussien avec détection d'outliers}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+# Introduction
+
+Le package mixturemodel a pour objectif de fournir un outil simple et
+flexible pour réaliser du clustering avec détection d'outliers.
+
+Il repose sur un modèle de mélange probabiliste constitué de K
+composantes gaussiennes représentant les différentes classes ou groupes
+d’observations, ainsi qu’une composante uniforme destinée à modéliser
+les outliers. Le modèle retourne soit le modèle avec K composantes
+gaussiennes, soit le modèle avec la composante uniforme. Les deux
+modèles sont départagés par la valeur du BIC.
+
+L’estimation des paramètres du modèle repose sur l’algorithme EM
+(Expectation–Maximization), avec un mécanisme de régularisation
+permettant d’éviter les problèmes numériques liés à l’inversion des
+matrices de covariance.
+
+Le package propose un modèle qui permet:
+
+-   de déterminer le nombre de classes optimal K,
+
+-   d’obtenir les paramètres d'apprentissage,
+
+-   de visualiser l'historique de la log-vraisemblance,
+
+-   d'obtenir la valeur du BIC,
+
+-   et d'obtenir les prédictions.
+
+Cette vignette montre comment utiliser le package mixturemodel, depuis
+le chargement des données jusqu’à l’interprétation des résultats de
+clustering, à travers des exemples reproductibles.
+
+# Description du modèle
+
+## Présentation du modèle
+
+Nous considérons un échantillon d'observations
+$\{x_1, x_2, \dots, x_n\}$ dans $\mathbb{R}^d$. Dans sa forme classique,
+le modèle de mélange gaussien suppose que chaque observation $x_i$ est
+générée par l'une des $K$ composantes gaussiennes :
+
+$$
+p(x_i \mid \Theta) = \sum_{k=1}^{K} p_k \, \mathcal{N}(x_i \mid \mu_k, \Sigma_k),
+$$
+
+où : - $p_k$ représente le poids de la composante $k$, avec $p_k \ge 0$
+et $\sum_{k=1}^{K} p_k = 1$, - $\mu_k \in \mathbb{R}^d$ et
+$\Sigma_k \in \mathbb{S}_+^d$ sont respectivement la moyenne et la
+matrice de covariance de la composante $k$.
+
+Pour la détection d'outliers, nous ajoutons une composante *uniforme*
+sur le domaine $\mathcal{D} \subset \mathbb{R}^d$ :
+
+$$
+p(x_i \mid \Theta) = \sum_{k=1}^{K} p_k \, \mathcal{N}(x_i \mid \mu_k, \Sigma_k)
++ p_0 \, \mathcal{U}(x_i \mid \mathcal{D}),
+$$
+
+où $p_0$ désigne le poids de la composante uniforme avec
+$p_0 + \sum_{k=1}^{K} p_k = 1$.
+
+## Estimation des paramètres
+
+### Paramètres des gaussiennes
+
+On note $t_{ik}$ la **responsabilité** de l'observation $x_i$ pour la
+composante $k$ et $N_k = \sum_{i=1}^{n} t_{ik}$.
+
+**Poids des clusters** $p_k$ :
+
+$$
+p_k = \frac{N_k}{n} = \frac{1}{n} \sum_{i=1}^{n} t_{ik}, \quad k = 1, \dots, K
+$$
+
+**Moyenne** $\mu_k$ :
+
+$$
+\mu_k = \frac{1}{N_k} \sum_{i=1}^{n} t_{ik} \, x_i
+$$
+
+**Matrice de covariance** $\Sigma_k$ :
+
+$$
+\Sigma_k = \frac{1}{N_k} \sum_{i=1}^{n} t_{ik} (x_i - \mu_k)(x_i - \mu_k)^\top
+$$
+
+### Paramètres de la composante uniforme
+
+Pour chaque variable $j = 1, \dots, d$ et $X_0$ le cluster modélisant
+les outliers :
+
+$$
+a_j = \min_{x_i \in X_0} x_{ij}
+$$
+
+$$
+b_j = \max_{x_i \in X_0} x_{ij}
+$$
+
+La densité uniforme est alors :
+
+$$
+\mathcal{U}(x_i \mid a, b) = \prod_{j=1}^{d} \frac{1}{b_j - a_j}, \quad x_i \in [a_1,b_1]\times\dots\times[a_d,b_d]
+$$
+
+## Régularisation des matrices de variance covariance
+
+L'estimation des matrices de covariance $\Sigma_k$ peut devenir instable
+(en particulier lorsque certaines composantes reçoivent peu
+d'observations). Pour garantir leur inversibilité nous ajoutons une
+régularisation lors de la maximisation de l'espérance :
+
+$$
+\Sigma_k^{(t+1)} 
+\leftarrow 
+\frac{1}{N_k} \sum_{i=1}^n t_{ik} (x_i - \mu_k^{(t+1)})(x_i - \mu_k^{(t+1)})^\top
+\;+\; \lambda I_d,
+$$
+
+où : - $t_{ik}$ sont les responsabilités calculées à l'étape E, -
+$\lambda > 0$ est un coefficient de régularisation, - $I_d$ est la
+matrice identité de dimension $d$.
+
+Cette régularisation garantit des covariances bien conditionnées,
+favorise une meilleure séparation des clusters et contribue à une
+détection plus robuste des outliers.
+
+# Installation du package
+
+```{r}
+#install.packages("chemin/vers/mixturemodel_0.1.0.tar.gz", repos = NULL, type = "source")
+```
+
+# Chargement du package
+
+```{r}
 library(mixturemodel)
 ```
 
-#Introduction
+# Données d'exemple
 
-Cette vignette a pour but de décrire l'utilisation du package "mixture_model_AKIBODE". C'est un package qui implémente un modèle de mélange avec K gaussiennes et une loi uniforme qui modélise les outliers.
-
-#Description du modèle
-
-#Installation du package
+Nous générons deux clusters gaussiens et des outliers modélisés par une
+uniforme. Pour cela nous implémentons une fonction qui prend en entrée n
+le nbre d'observations, d le nbre de variables et prop la proportion
+d'outliers.
 
 ```{r}
-#install.packages("chemin/vers/ton_package_0.1.0.tar.gz", repos = NULL, type = "source")
+
+generate_clusters<-function(n, d, prop){
+  
+n_out <- round(n * prop_outlier)
+n1 <- round((n - n_out) / 2)
+n2 <- n - n_out - n1
+
+# -----------------------
+# Cluster gaussien 1
+mu1 <- c(0, 0)
+sigma1 <- matrix(c(1, 0.2,
+                   0.2, 1.5), 2, 2)
+X1 <- MASS::mvrnorm(n1, mu1, sigma1)
+
+# Cluster gaussien 2
+mu2 <- c(6, 4)
+sigma2 <- matrix(c(1.2, -0.1,
+                   -0.1, 0.8), 2, 2)
+X2 <- MASS::mvrnorm(n2, mu2, sigma2)
+
+# -----------------------
+# Outliers (loi uniforme)
+Xout <- cbind(
+  runif(n_out, min = -8, max = 12),
+  runif(n_out, min = -6, max = 10)
+)
+
+# -----------------------
+# Données finales
+X <- rbind(X1, X2, Xout)
+return(X)
+ }
 ```
 
-- repos = NULL : indique à R que le package est local, pas sur CRAN.
+## Exemple 1
 
-- type = "source" : car .tar.gz est une source (pas binaire).
-
-#Données d'exemple
+Le premier exemple comprend 10% d'outliers.
 
 ```{r}
-#data=iris[, -5]
 set.seed(123)
 
-# --- Cluster 1 ---
-x1 <- cbind(rnorm(100, mean = 0, sd = 0.5),
-            rnorm(100, mean = 0, sd = 0.5))
+n <- 800      
+d <- 2
+prop_outlier <- 0.1
 
-# --- Cluster 2 ---
-x2 <- cbind(rnorm(100, mean = 5, sd = 0.5),
-            rnorm(100, mean = 5, sd = 0.5))
-
-# --- Outlier ---
-outlier <- matrix(c(10, 0), ncol = 2)  # très éloigné des autres points
-
-# --- Jeu de données complet ---
-x <- rbind(x1, x2, outlier)
-colnames(x) <- c("X1", "X2")
-
-normalize_zscore <- function(x) {
-  x_norm <- scale(x)  # centre (mean=0) et réduit (sd=1) chaque colonne
-  return(x_norm)
-}
-
-# Exemple
-x <- normalize_zscore(x)
-
-# --- Visualisation ---
-plot(x, col = "grey40", pch = 19, main = "Données simulées avec un outlier")
-points(outlier[,1], outlier[,2], col = "red", pch = 19, cex = 1.5)
-
+X_1<-generate_clusters(n, d, prop_outlier)
 ```
 
-#Fonctionnalités principales
+## Exemple 2
 
-##Modélisation
-
-###Modèle
+Le deuxième exemple comprend 30% d'outliers.
 
 ```{r}
-mm_model<-MixtureModel(x, K=3)
+set.seed(123)
+
+n <- 800      
+d <- 2
+prop_outlier <- 0.3
+
+X_2<-generate_clusters(n, d, prop_outlier)
 ```
 
-###Apprentissage
+# Fonctionnalités principales
+
+## Modélisation
+
+### Modèle
+
+Lorsqu'on ne donne pas K, il est sélectionné par le modèle en prenant le
+modèle sans outliers avec le meilleur BIC.
+
+L'initialisation multiple est implémentée en interne et initialisée à
+20.
 
 ```{r}
-mm_model<-fit(mm_model)
+model_1<-MixtureModel(X_1, K=2, initialization_steps = 20)
+model_2<-MixtureModel(X_2)
 ```
 
-###Probabilités d'appartenance à chaque cluster: Q
+### Apprentissage
 
 ```{r}
-tail(mm_model$proba)
+model_1<-fit(model_1)
 ```
-
-###Paramètres du modèle
 
 ```{r}
-tail(mm_model$params)
+model_2<-fit(model_2)
 ```
 
-###Critère BIC
+### Probabilités d'appartenance à chaque cluster: Q
 
 ```{r}
-mm_model$bic
+tail(model_1$proba)
 ```
 
-##Visualisation
+### Paramètres du modèle
 
-###Visualisation de la vraisemblance
+```{r}
+tail(model_1$params)
+```
+
+### Critère BIC
+
+Pour un modèle de mélange gaussien standard (sans outliers), le BIC est
+calculé comme :
+
+$$
+\text{BIC} = 2 \, \mathcal{L}(\hat{\theta}) - \nu \log(n)
+$$
+
+où :
+
+-   $\mathcal{L}(\hat{\theta})$ est la log-vraisemblance maximale du
+    modèle,
+-   $\nu$ est le nombre de paramètres estimés dans le modèle : $$
+     \nu = K \times \left( d + \frac{d(d+1)}{2} \right) + (K-1)
+        $$ avec $d$ le nombre de dimensions des données et $K$ le nombre
+    de clusters,
+-   $n$ est le nombre d’observations.
+
+Pour un modèle incluant un **cluster uniforme** pour la détection
+d’outliers, la log-vraisemblance $\mathcal{L}_{\text{outliers}}$ inclut
+également la contribution du cluster uniforme.\
+Le BIC devient alors :
+
+$$
+\text{BIC}_{\text{outliers}} = 2 \, \mathcal{L}_{\text{outliers}}(\hat{\theta}) - \nu_{\text{outliers}} \log(n)
+$$
+
+avec $\nu_{\text{outliers}}$ le nombre total de paramètres, qui inclut
+les paramètres de la distribution uniforme :
+
+$$
+\nu_{\text{outliers}} = K \times \left( d + \frac{d(d+1)}{2} \right) + 2d + K
+$$
+
+où $2d$ correspond aux bornes $(a_j, b_j)$ de l’intervalle uniforme sur
+chaque dimension $j = 1, \dots, d$, et $K$ aux poids des composantes.
+
+Le BIC est à maximiser.
+
+```{r}
+model_1$bic
+```
+
+## Visualisation
+
+### Visualisation de la vraisemblance
 
 ```{r}
 plot(
-  unlist(mm_model$likehood_values),
-  type = "l",                 # "l" pour ligne
+  unlist(model_1$likehood_values),
+  type = "l",                
   col = "blue",
   lwd = 2,
   xlab = "Itérations",
@@ -119,12 +322,15 @@ plot(
 grid()
 ```
 
-###Visualisation du choix de K
+### Visualisation du choix de K pour le modèle 2
+
+Lorsqu'on donne K en entrée bic_values = NULL. Sinon on peut visualiser
+l'évolution du BIC en fonction de K.
 
 ```{r}
 plot(
-  mm_model$bic_values,
-  type = "p",                 # "l" pour ligne
+  model_2$bic_values,
+  type = "p",         
   col = "blue",
   lwd = 2,
   xlab = "K",
@@ -134,17 +340,148 @@ plot(
 grid()
 ```
 
-###Visualisation des clusters en 2D
+### Visualisation des clusters en 2D: modèle 1
 
 ```{r}
 library(ggplot2)
 
-ggplot(data = mm_model$data, aes(x=mm_model$data[, 1], y=mm_model$data[, 2], color=mm_model$preds))+
-  geom_point(size=3)
+df_1 <- data.frame(
+  x = model_1$data[,1],
+  y = model_1$data[,2],
+  cluster = model_1$preds
+)
+ggplot(data = df_1, aes(x=x, y=y, color=cluster))+
+  geom_point(size=2)+
+  theme_minimal()
 ```
 
-#Interprétation
+### Visualisation des clusters en 2D: modèle 2
 
-#Bonnes pratiques
+```{r}
+df_2 <- data.frame(
+  x = model_2$data[,1],
+  y = model_2$data[,2],
+  cluster = model_2$preds
+)
+ggplot(data = df_2, aes(x=x, y=y, color=cluster))+
+  geom_point(size=2)+
+  theme_minimal()
+```
 
-#Références
+# Interprétation
+
+À partir des exemples étudiés, nous observons que le modèle identifie
+efficacement les outliers lorsque leur proportion reste modérée. Ce
+comportement est cohérent avec la nature probabiliste du modèle.
+
+En revanche, lorsque la proportion d’outliers devient très élevée, le
+modèle tend à intégrer ces observations dans une ou plusieurs
+composantes gaussiennes plutôt qu’à les assigner à la composante
+uniforme. Dans ce cas, la solution optimale selon le critère de
+maximisation du BIC correspond à la création d’une gaussienne
+supplémentaire pour modéliser les outliers.
+
+Cela souligne que la détection des outliers repose sur un équilibre
+entre la structure des clusters gaussiens et le poids attribué à la
+composante uniforme. Le modèle est donc performant lorsque les outliers
+sont présents en proportion significative mais non dominante.
+
+# Bonnes pratiques: normalisation des données
+
+Le modèle repose sur l’estimation de matrices de variance–covariance, ce
+qui peut devenir numériquement instable lorsque les variables sont
+exprimées sur des échelles très différentes. Pour garantir la stabilité
+du calcul, éviter les inversions de matrices singulières et réduire le
+coût computationnel, il est conseillé de normaliser ou standardiser les
+données en amont (par exemple via scale()).
+
+## Exemple de données
+
+```{r}
+library(MASS)
+set.seed(123)
+n_clusters <- 3
+d <- 30     
+points_per_cluster <- 150
+outliers <- 50
+
+means <- lapply(1:n_clusters, function(i) runif(d, -5, 5))
+covs <- lapply(1:n_clusters, function(i) diag(runif(d, 0.5, 1.5)))
+
+# Génération clusters
+X <- do.call(rbind, lapply(1:n_clusters, function(k) {
+  mvrnorm(points_per_cluster, mu = means[[k]], Sigma = covs[[k]])
+}))
+
+# Génération d'outliers uniformes
+X_out <- matrix(runif(outliers*d, min=-10, max=10), ncol=d)
+X<- rbind(X, X_out)
+```
+
+## Affichage des données
+
+```{r}
+tail(X)
+```
+
+## Normalisation des données
+
+```{r}
+norm_X<- scale(X)
+tail(norm_X)
+```
+
+## Apprentissage du modèle
+
+```{r}
+norm_model<-MixtureModel(norm_X)
+norm_model<-fit(norm_model)
+```
+
+## Visualisation de la vraisemblance
+
+```{r}
+plot(
+  unlist(norm_model$likehood_values),
+  type = "l",                
+  col = "blue",
+  lwd = 2,
+  xlab = "Itérations",
+  ylab = "Log-vraisemblance",
+  main = "Évolution de la log-vraisemblance (EM)"
+)
+grid()
+```
+
+## Visualisation du choix de K
+
+```{r}
+plot(
+  norm_model$bic_values,
+  type = "p",               
+  col = "blue",
+  lwd = 2,
+  xlab = "K",
+  ylab = "BIC",
+  main = "Évolution du BIC"
+)
+grid()
+```
+
+# Conclusion
+
+Somme toute, le package mixturemodel a bien fait ses preuves sur les
+exemples précédents. Nous pouvons donc conclure que la détection
+d'outliers améliore la robustesse du modèle et l’interprétabilité des
+résultats, notamment lorsque les outliers représentent une proportion
+significative des observations.
+
+Cependant, il est important de souligner que ce package propose une
+implémentation basique qui ne s'étend pas aux jeux de données assez
+large en terme de nombre de variables. En effet, on pourrait l'étendre
+en intégrant des stratégies avancées de régularisation des matrices de
+variance-covariance (diagonalisation, parsimonie, contraintes par
+familles VEV / VVV / ...).
+
+Malgré ces limites, mixturemodel constitue une bonne base pour effectuer
+du clustering avec détection d'outliers.

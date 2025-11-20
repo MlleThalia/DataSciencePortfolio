@@ -4,7 +4,7 @@
 \alias{k_selection}
 \title{Select K}
 \usage{
-k_selection(e, m, x, K_max)
+k_selection(e, m, x, K_max = 10)
 }
 \arguments{
 \item{e}{a function}
