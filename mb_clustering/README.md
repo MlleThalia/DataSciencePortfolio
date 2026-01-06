@@ -16,5 +16,7 @@ install.packages("chemin/vers/mixturemodel_0.1.0.tar.gz", repos = NULL, type = "
 library(mixturemodel)
 
 model<-MixtureModel(X, K=2, initialization_steps = 20)
+
 model<-fit(model)
+
 tail(model$params)

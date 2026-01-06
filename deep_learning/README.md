@@ -4,6 +4,8 @@ Ce projet consiste à réaliser une classification visant à déterminer l’act
 
 ## 📂 Structure du projet
 
+- `data/` — jeu de données
+- `images/` — images
 - `/.ipynb` — notebooks d'expérimentations
 - `/.pdf` — rapport
 
