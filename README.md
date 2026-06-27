@@ -15,7 +15,7 @@ I am currently pursuing the **Master's degree in Machine Learning for Artificial
 * Currently working on Generative AI and Prompt Engineering
 * Looking for a full-time position from **November 2026**
 
-📄 **Curriculum Vitae** *docs/CV_DataScience_AKIBODE.pdf*
+📄 **Curriculum Vitae** [](docs/CV_DataScience_AKIBODE.pdf)
 
 🔗 **LinkedIn**
 https://www.linkedin.com/in/yayrale-f-n-marie-france-akibode-04a329151/
@@ -36,7 +36,7 @@ Development of an R package implementing **Gaussian Mixture Models** for model-b
 * Unit Tests
 * R Package Development
 
-Project: `r_package_mixturemodel`
+Project: [r_package_mixturemodel](r_package_mixturemodel/)
 
 ---
 
