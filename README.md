@@ -1,16 +1,43 @@
-# DataSciencePortfolio
+# Data Science Portfolio
 
-Bienvenue sur mon portfolio GitHub !  
-Je suis étudiante en Master 2 Data Science (MALIA, Université Lumière Lyon 2) et je recherche un stage en Data Science / Machine Learning.  
+Welcome to my Data Science portfolio!
 
-📄 [Mon CV en PDF](docs/CV_DataScience_AKIBODE.pdf)  
-🔗 [Mon LinkedIn](https://www.linkedin.com/in/yayrale-f-n-marie-france-akibode-04a329151/)
+I am currently pursuing the **Master's degree in Machine Learning for Artificial Intelligence (MALIA)** at **Université Lumière Lyon 2**. With a background in quantitative finance and data science, I am particularly interested in **Machine Learning**, **Generative AI**, **Large Language Models (LLMs)** and **Time Series Forecasting**.
 
-## 🚀 Projets
-- [Analyse de séries temporelles](time_series/)  
-- [Ensemble Learning pour la Prédiction en ML](ensemble_learning/)  
-- [Implémentation d'un package R basé sur des mélanges gaussiens](mb_clustering/)
-- [Reconnaissance d'activités humaines avec un réseau de neurones Multi-Perceptron](deep_learning/)
-- [Étude de la déformation d’un papillon en rosace à l’aide d’outils de manifold learning](manifold_learning/)
-- [Inférence automatique des relations entre deux phrases avec CamemBERT et LLaMA](nlp_representation_learning/)
-- [Expérimentations de différentes méthodes d'XAI](xai/)
+**Available for a full-time Data Scientist / AI Engineer position starting November 2026.**
+
+---
+
+## About Me
+
+* Master's in Machine Learning for Artificial Intelligence (MALIA)
+* Background in Quantitative Finance
+* Currently working on Generative AI and Prompt Engineering
+* Looking for a full-time position from **November 2026**
+
+📄 **Curriculum Vitae** *docs/CV_DataScience_AKIBODE.pdf*
+
+🔗 **LinkedIn**
+https://www.linkedin.com/in/yayrale-f-n-marie-france-akibode-04a329151/
+
+---
+
+# Featured Projects
+
+## R Package – mixturemodel
+
+Development of an R package implementing **Gaussian Mixture Models** for model-based clustering and outlier detection.
+
+**Highlights**
+
+* Gaussian Mixture Models
+* Outlier Detection
+* Package Documentation
+* Unit Tests
+* R Package Development
+
+Project: `r_package_mixturemodel`
+
+---
+
+Thank you for visiting my portfolio!
