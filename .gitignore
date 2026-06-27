@@ -13,6 +13,7 @@ venv/
 .env/
 .env
 **/.DS_Store
+.gitkeep
 
 # ======================
 # Jupyter
@@ -33,6 +34,7 @@ venv/
 .RData
 .Rproj.user/
 .Ruserdata
+*.Rproj
 
 # ======================
 # Keynote
