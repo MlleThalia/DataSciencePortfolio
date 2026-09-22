@@ -1,0 +1,67 @@
+[
+    {
+        "id": "eval-job-001",
+        "title": "Data Scientist",
+        "company": "TechNova",
+        "city": "Lyon",
+        "country": "France",
+        "contract": "CDI",
+        "publication_date": "2026-09-01",
+        "description": "Nous recherchons un Data Scientist maîtrisant Python, SQL et le Machine Learning.",
+        "salary": "40-45k€",
+        "url": "https://example.com/jobs/eval-job-001",
+        "source": "synthetic"
+    },
+    {
+        "id": "eval-job-002",
+        "title": "Machine Learning Engineer",
+        "company": "DataFlow",
+        "city": "Paris",
+        "country": "France",
+        "contract": "CDI",
+        "publication_date": "2026-09-02",
+        "description": "Vous travaillerez sur des modèles de Machine Learning en Python et leur déploiement avec Docker.",
+        "salary": "45-50k€",
+        "url": "https://example.com/jobs/eval-job-002",
+        "source": "synthetic"
+    },
+    {
+        "id": "eval-job-003",
+        "title": "Data Analyst",
+        "company": "InsightCorp",
+        "city": "Lille",
+        "country": "France",
+        "contract": "CDI",
+        "publication_date": "2026-09-03",
+        "description": "Nous recherchons un Data Analyst avec une bonne maîtrise de SQL, Excel et Power BI.",
+        "salary": "35-40k€",
+        "url": "https://example.com/jobs/eval-job-003",
+        "source": "synthetic"
+    },
+    {
+        "id": "eval-job-004",
+        "title": "AI Engineer",
+        "company": "SmartAI",
+        "city": "Grenoble",
+        "country": "France",
+        "contract": "CDD",
+        "publication_date": "2026-09-04",
+        "description": "Vous développerez des applications d'intelligence artificielle avec Python, PyTorch et des modèles de Deep Learning.",
+        "salary": "42-48k€",
+        "url": "https://example.com/jobs/eval-job-004",
+        "source": "synthetic"
+    },
+    {
+        "id": "eval-job-005",
+        "title": "Data Engineer",
+        "company": "CloudData",
+        "city": "Toulouse",
+        "country": "France",
+        "contract": "CDI",
+        "publication_date": "2026-09-05",
+        "description": "Nous recherchons un Data Engineer connaissant Python, SQL, PostgreSQL et les environnements cloud.",
+        "salary": "40-46k€",
+        "url": "https://example.com/jobs/eval-job-005",
+        "source": "synthetic"
+    }
+]

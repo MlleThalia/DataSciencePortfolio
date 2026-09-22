@@ -1,0 +1,120 @@
+[
+    {
+        "job_id": "eval-job-001",
+        "expected": {
+            "summary": "Data Scientist recherché pour travailler sur des problématiques de Machine Learning avec Python et SQL.",
+            "skills": [
+                "Data Science",
+                "Machine Learning"
+            ],
+            "technologies": [
+                "Python",
+                "SQL"
+            ],
+            "experience": "Aucune expérience spécifique mentionnée.",
+            "education": "Aucune formation spécifique mentionnée.",
+            "languages": [],
+            "keywords": [
+                "Data Scientist",
+                "Machine Learning",
+                "Python",
+                "SQL"
+            ]
+        }
+    },
+    {
+        "job_id": "eval-job-002",
+        "expected": {
+            "summary": "Machine Learning Engineer chargé de développer des modèles de Machine Learning en Python et de les déployer avec Docker.",
+            "skills": [
+                "Machine Learning",
+                "Déploiement de modèles"
+            ],
+            "technologies": [
+                "Python",
+                "Docker"
+            ],
+            "experience": "Aucune expérience spécifique mentionnée.",
+            "education": "Aucune formation spécifique mentionnée.",
+            "languages": [],
+            "keywords": [
+                "Machine Learning Engineer",
+                "Machine Learning",
+                "Python",
+                "Docker"
+            ]
+        }
+    },
+    {
+        "job_id": "eval-job-003",
+        "expected": {
+            "summary": "Data Analyst recherché pour analyser des données avec SQL, Excel et Power BI.",
+            "skills": [
+                "Analyse de données"
+            ],
+            "technologies": [
+                "SQL",
+                "Excel",
+                "Power BI"
+            ],
+            "experience": "Aucune expérience spécifique mentionnée.",
+            "education": "Aucune formation spécifique mentionnée.",
+            "languages": [],
+            "keywords": [
+                "Data Analyst",
+                "SQL",
+                "Excel",
+                "Power BI"
+            ]
+        }
+    },
+    {
+        "job_id": "eval-job-004",
+        "expected": {
+            "summary": "AI Engineer recherché pour développer des applications d'intelligence artificielle avec Python, PyTorch et des modèles de Deep Learning.",
+            "skills": [
+                "Intelligence artificielle",
+                "Deep Learning"
+            ],
+            "technologies": [
+                "Python",
+                "PyTorch"
+            ],
+            "experience": "Aucune expérience spécifique mentionnée.",
+            "education": "Aucune formation spécifique mentionnée.",
+            "languages": [],
+            "keywords": [
+                "AI Engineer",
+                "Intelligence artificielle",
+                "Deep Learning",
+                "Python",
+                "PyTorch"
+            ]
+        }
+    },
+    {
+        "job_id": "eval-job-005",
+        "expected": {
+            "summary": "Data Engineer recherché pour travailler avec Python, SQL, PostgreSQL et des environnements cloud.",
+            "skills": [
+                "Data Engineering",
+                "Cloud"
+            ],
+            "technologies": [
+                "Python",
+                "SQL",
+                "PostgreSQL"
+            ],
+            "experience": "Aucune expérience spécifique mentionnée.",
+            "education": "Aucune formation spécifique mentionnée.",
+            "languages": [],
+            "keywords": [
+                "Data Engineer",
+                "Python",
+                "SQL",
+                "PostgreSQL",
+                "Cloud"
+            ]
+        }
+    }
+]

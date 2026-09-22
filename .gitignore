@@ -45,11 +45,14 @@ venv/
 # Folders
 # ======================
 
-reports/
 outputs/
 postman/
 logs/
 build/
+tests/
+ui/
+traces/
+electricity_demand_forecasting/
 
 # ======================
 # Packages
@@ -59,3 +62,6 @@ build/
 # ======================
 # Files
 # ======================
+
+out.txt
+main.py
