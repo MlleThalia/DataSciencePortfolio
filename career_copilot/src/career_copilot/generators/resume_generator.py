@@ -23,8 +23,10 @@ class ResumeGenerator:
             json_output=True,
         )
 
+        llm_response = response["llm_response"]
+
         logger.info(f"Resume generated with success.")
-        return Resume.model_validate(response)
+        return Resume.model_validate(llm_response)
     
     def _build_prompt(
         self,

@@ -1,0 +1,162 @@
+[
+    {
+        "id": "eval-job-001",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.25,
+            "recall": 1.0,
+            "f1_score": 0.4
+        },
+        "summary": {
+            "score": 3,
+            "reason": {
+                "factual_consistency": "The predicted summary introduces additional context (e.g., location, company name, specific tasks like 'extraction and analysis of data') that is not present in the expected summary, which focuses solely on the role and required skills (Python, SQL, Machine Learning).",
+                "coverage": "The core requirement (Data Scientist role with Machine Learning, Python, and SQL) is covered, but the predicted summary expands beyond the expected scope with extra details.",
+                "unsupported_info": "No unsupported or invented information is present, though the expanded details (e.g., 'optimize business processes') are not explicitly mentioned in the expected summary.",
+                "semantic_similarity": "The semantic alignment is moderate; while the predicted summary aligns with the expected role, it diverges by adding company-specific and location-specific details."
+            }
+        }
+    },
+    {
+        "id": "eval-job-002",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.3333333333333333,
+            "recall": 1.0,
+            "f1_score": 0.5
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.2,
+            "recall": 0.75,
+            "f1_score": 0.31578947368421056
+        },
+        "summary": {
+            "score": 4,
+            "reason": {
+                "factual_consistency": "High. Both summaries correctly mention Python, ML model development, and Docker deployment.",
+                "coverage": "Good. The predicted summary includes all key elements (Python, ML models, Docker) and adds contextual details (job role, location) without deviating from the core meaning.",
+                "unsupported_info": "None. No invented or misleading information is present.",
+                "semantic_similarity": "High. The predicted summary aligns closely with the expected one, though it expands slightly with job-specific context (e.g., 'DataFlow recherche', 'basé à Paris')."
+            }
+        }
+    },
+    {
+        "id": "eval-job-003",
+        "skills": {
+            "precision": 0.2,
+            "recall": 1.0,
+            "f1_score": 0.33333333333333337
+        },
+        "technologies": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.3076923076923077,
+            "recall": 1.0,
+            "f1_score": 0.47058823529411764
+        },
+        "summary": {
+            "score": 3,
+            "reason": {
+                "factual_consistency": "The core requirement (analyzing data) is consistent, but the predicted summary adds irrelevant details (location, strategic decision support, and data transformation) not present in the expected summary.",
+                "coverage": "The expected tools (SQL, Excel, Power BI) are not explicitly mentioned in the predicted summary, reducing direct coverage of the main information.",
+                "unsupported_info": "No unsupported or invented information is present, but the predicted summary expands beyond the expected scope.",
+                "semantic_similarity": "The semantic meaning aligns well, but the predicted summary is more detailed and less concise than the expected one."
+            }
+        }
+    },
+    {
+        "id": "eval-job-004",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.3333333333333333,
+            "recall": 1.0,
+            "f1_score": 0.5
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.23076923076923078,
+            "recall": 0.6,
+            "f1_score": 0.33333333333333337
+        },
+        "summary": {
+            "score": 5,
+            "reason": {
+                "factual_consistency": "All key elements (Python, PyTorch, Deep Learning) are preserved and correctly described.",
+                "coverage": "The predicted summary expands logically on the expected one by adding context (location, role specifics, and innovation focus) without deviating from the core message.",
+                "unsupported_info": "No unsupported or invented details are present; all additions are relevant and grounded.",
+                "semantic_similarity": "The meaning is fully aligned, with enhanced specificity (e.g., 'conception, entraînement, optimisation') that strengthens the match."
+            }
+        }
+    },
+    {
+        "id": "eval-job-005",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.375,
+            "recall": 1.0,
+            "f1_score": 0.5454545454545454
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.25,
+            "recall": 0.8,
+            "f1_score": 0.38095238095238093
+        },
+        "summary": {
+            "score": 3,
+            "reason": {
+                "factual_consistency": "The predicted summary does not explicitly mention **Python, SQL, or PostgreSQL**, which are key elements in the expected summary. However, the context (Data Engineer role, cloud environments) implies their relevance.",
+                "coverage": "The predicted summary expands on the expected one by detailing responsibilities (ETL pipelines, data quality, scalability) but misses the core technical stack mentioned in the expected summary.",
+                "unsupported_info": "No unsupported or invented information is present. The predicted summary is factually grounded in the role description.",
+                "semantic_similarity": "The semantic overlap is moderate. While the predicted summary aligns with the expected role (Data Engineer + cloud), it lacks direct alignment on the specific technologies (Python, SQL, PostgreSQL)."
+            }
+        }
+    }
+]

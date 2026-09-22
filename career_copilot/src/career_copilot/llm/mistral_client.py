@@ -25,7 +25,7 @@ class MistralClient:
         self,
         system_prompt: str,
         user_prompt: str,
-        attempt_number: int,
+        attempt_number: int = 1,
         json_output: bool = False,
     )->Mapping[str, Any]:
         

@@ -23,13 +23,13 @@ logging.basicConfig(
 logging.getLogger("pdfminer").setLevel(logging.WARNING)
 logging.getLogger().setLevel(logging.DEBUG)
 
-from evaluator import evaluate_job_analysis
+from deterministic_evaluator import evaluate_job_analysis
+from llm_judge import LlmAsJudge
 from career_copilot.models.job_analyser import JobAnalysis
 from career_copilot.models.job_offer import JobOffer
 from career_copilot.models.tracing import Run
 from career_copilot.generators.job_analyzer import JobAnalyzer
 from career_copilot.llm.mistral_client import MistralClient
-
 
 # loading evaluation dataset and ground_truth
 eval_dataset_path = "career_copilot/evaluation/eval_dataset.json" 
@@ -40,10 +40,6 @@ with open(eval_dataset_path, "r", encoding="utf-8") as file:
 
 with open(ground_truth_path, "r", encoding="utf-8") as file:
     ground_truth = json.load(file)
-
-summary_evaluation_prompt =  f"""
-        
-        """
 
 def create_run():
     run = {
@@ -72,29 +68,6 @@ def build_llm_client():
 
 mistral_client = MistralClient()
 
-# In progress
-def llm_judge(client : MistralClient, system_prompt: str):
-    llm_calls = []
-    for attempt_number in range(1, MAX_RETRY+2):
-
-        response = client.generate(
-            system_prompt=system_prompt,
-            user_prompt=prompt,
-            attempt_number=attempt_number,
-            json_output=True,
-        )
-
-        logger.info(f"Summary evaluation | {attempt_number} attempt.")
-        llm_response = response["llm_response"]
-        llm_trace = response["trace"]
-
-        if "http_error" in llm_trace.errors or "json_decode_error" in llm_trace.errors :
-            llm_calls.append(llm_trace)
-            time.sleep(1)
-            continue
-        else : 
-            pass
-
 def predict(eval_datasets : list, system_prompt: str)->list[JobAnalysis]:
     "Runs predictions on evaluation datasets"
     job_analyzer = JobAnalyzer(client=mistral_client)
@@ -118,6 +91,7 @@ def predict(eval_datasets : list, system_prompt: str)->list[JobAnalysis]:
 def run_evaluate(ground_truth: list[Mapping[str, Any]], predicted: list[JobAnalysis])->list[Mapping[str, Any]]:
     """Runs deterministic evaluation"""
     results = []
+    llm_as_judge = LlmAsJudge(client=mistral_client)
     for ground_truth_item in ground_truth :
         job_id = ground_truth_item["job_id"]
         predicted_item = next(
@@ -132,7 +106,7 @@ def run_evaluate(ground_truth: list[Mapping[str, Any]], predicted: list[JobAnaly
         predicted_data.pop("id", None)
         ground_truth_job_analysis = JobAnalysis(**ground_truth_data)
         predicted_job_analysis = JobAnalysis(**predicted_data)
-        result = {"id" : job_id} | evaluate_job_analysis(ground_truth_job_analysis, predicted_job_analysis)
+        result = {"id" : job_id} | evaluate_job_analysis(ground_truth_job_analysis, predicted_job_analysis) | {"summary" : llm_as_judge.judge(ground_truth_job_analysis.summary, predicted_job_analysis.summary)}
         results.append(result)
         logger.debug(f"Job {job_id} has been evaluated with success!")
 

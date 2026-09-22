@@ -1,0 +1,162 @@
+[
+    {
+        "id": "eval-job-001",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.3333333333333333,
+            "recall": 1.0,
+            "f1_score": 0.5
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.36363636363636365,
+            "recall": 1.0,
+            "f1_score": 0.5333333333333333
+        },
+        "summary": {
+            "score": 3,
+            "reason": {
+                "factual_consistency": "The core role ('Data Scientist') and domain ('Machine Learning') are consistent, but the expected summary does not mention location or specific tasks like 'développer des modèles prédictifs'.",
+                "coverage": "The predicted summary adds context (location, specific tasks) not present in the expected summary, which slightly deviates from the original focus on Python/SQL.",
+                "unsupported_info": "No unsupported or invented information is present, but the expanded details (e.g., Lyon, predictive models) are not in the expected summary.",
+                "semantic_similarity": "High semantic overlap on the role and domain, but the predicted summary introduces additional details that shift focus slightly."
+            }
+        }
+    },
+    {
+        "id": "eval-job-002",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.25,
+            "recall": 1.0,
+            "f1_score": 0.4
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.21428571428571427,
+            "recall": 0.75,
+            "f1_score": 0.3333333333333333
+        },
+        "summary": {
+            "score": 5,
+            "reason": {
+                "factual_consistency": "Both summaries accurately reflect the role of a Machine Learning Engineer, including Python and Docker deployment.",
+                "coverage": "The predicted summary fully covers the core responsibilities (development and deployment) and adds relevant context (company name, specialization, and location) without deviating from the expected meaning.",
+                "absence_of_unsupported_info": "No unsupported or invented information is present; all details are logically consistent with the expected summary.",
+                "semantic_similarity": "The semantic meaning is nearly identical, with the predicted summary being a more detailed and natural phrasing of the expected summary."
+            }
+        }
+    },
+    {
+        "id": "eval-job-003",
+        "skills": {
+            "precision": 0.2,
+            "recall": 1.0,
+            "f1_score": 0.33333333333333337
+        },
+        "technologies": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.36363636363636365,
+            "recall": 1.0,
+            "f1_score": 0.5333333333333333
+        },
+        "summary": {
+            "score": 3,
+            "reason": {
+                "factual_consistency": "The core task (data analysis) is consistent, but the expected summary specifies tools (SQL, Excel, Power BI), which are missing in the predicted summary.",
+                "coverage": "The predicted summary adds location ('Lille') and output ('rapports exploitables'), which are not in the expected summary, slightly deviating from the original focus.",
+                "unsupported_info": "No unsupported or invented information is present.",
+                "semantic_similarity": "The semantic meaning aligns well, but the predicted summary introduces additional context (location, output type) that alters the brevity and specificity of the expected summary."
+            }
+        }
+    },
+    {
+        "id": "eval-job-004",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.25,
+            "recall": 1.0,
+            "f1_score": 0.4
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.21428571428571427,
+            "recall": 0.6,
+            "f1_score": 0.3157894736842105
+        },
+        "summary": {
+            "score": 4,
+            "reason": {
+                "factual_consistency": "The predicted summary retains all key technical elements (Python, PyTorch, Deep Learning) and the core task (AI application development) from the expected summary.",
+                "coverage": "The main information is fully covered, though the predicted summary adds minor contextual detail ('entreprise basée à Grenoble'), which is not incorrect but not part of the expected summary.",
+                "unsupported_info": "No unsupported or invented information is present.",
+                "semantic_similarity": "The semantic meaning is highly aligned, with only a slight expansion of scope (location) that does not detract from the match."
+            }
+        }
+    },
+    {
+        "id": "eval-job-005",
+        "skills": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0
+        },
+        "technologies": {
+            "precision": 0.3,
+            "recall": 1.0,
+            "f1_score": 0.4615384615384615
+        },
+        "languages": {
+            "precision": 0.0,
+            "recall": 0,
+            "f1_score": 0
+        },
+        "keywords": {
+            "precision": 0.29411764705882354,
+            "recall": 1.0,
+            "f1_score": 0.45454545454545453
+        },
+        "summary": {
+            "score": 4,
+            "reason": {
+                "factual_consistency": "All key elements (Python, SQL, PostgreSQL, cloud environments) are present and factually accurate.",
+                "coverage": "The predicted summary includes all main information from the expected summary and adds minor contextual details (e.g., 'CloudData', 'Toulouse', 'ingénierie de données') without deviating from the core intent.",
+                "unsupported_info": "No unsupported or invented information is present; additional details are plausible and relevant.",
+                "semantic_similarity": "High semantic alignment with the expected summary, though slightly more verbose and specific. The core meaning remains unchanged."
+            }
+        }
+    }
+]
