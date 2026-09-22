@@ -121,6 +121,7 @@ The objective is to measure the impact of prompt modifications while keeping the
 
 ## Project Structure
 
+```text
 career_copilot/
 ├── evaluation/
 │   ├── eval_dataset.json
@@ -153,6 +154,7 @@ career_copilot/
 ├── pyproject.toml
 ├── requirements.txt
 └── README.md
+```
 
 ## Tech Stack
 
