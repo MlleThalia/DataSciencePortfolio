@@ -2,7 +2,7 @@
 
 Welcome to my Data Science portfolio!
 
-I am currently pursuing the **Master's degree in Machine Learning for Artificial Intelligence (MALIA)** at **Université Lumière Lyon 2**. With a background in quantitative finance and data science, I am particularly interested in **Machine Learning**, **Generative AI**, **Large Language Models (LLMs)** and **Time Series Forecasting**.
+I hold a Master's degree in Machine Learning for Artificial Intelligence (MALIA) from Université Lumière Lyon 2. With a background in quantitative finance and data science, I am particularly interested in Machine Learning, Generative AI, Large Language Models (LLMs), and Time Series Forecasting.
 
 **Available for a full-time Data Scientist / AI Engineer position starting November 2026.**
 
@@ -15,7 +15,7 @@ I am currently pursuing the **Master's degree in Machine Learning for Artificial
 * Currently working on Generative AI and Prompt Engineering
 * Looking for a full-time position from **November 2026**
 
-📄 **[Curriculum Vitae](docs/CV_DataScience_AKIBODE.pdf)**
+📄 **[Curriculum Vitae](docs/CV_Ingenieur_IA_AKIBODE)**
 
 🔗 **[LinkedIn](https://www.linkedin.com/in/yayrale-f-n-marie-france-akibode-04a329151/)**
 
