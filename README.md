@@ -15,7 +15,7 @@ I hold a Master's degree in Machine Learning for Artificial Intelligence (MALIA)
 * Currently working on Generative AI and Prompt Engineering
 * Looking for a full-time position from **November 2026**
 
-📄 **[Curriculum Vitae](docs/CV_Ingenieur_IA_AKIBODE)**
+📄 **[Curriculum Vitae](docs/CV_AKIBODE.pdf)**
 
 🔗 **[LinkedIn](https://www.linkedin.com/in/yayrale-f-n-marie-france-akibode-04a329151/)**
 
