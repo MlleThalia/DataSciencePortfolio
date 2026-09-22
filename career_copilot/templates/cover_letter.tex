@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{letter}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2cm,bottom=2.5cm}
+\usepackage{lmodern}
+
+\begin{document}
+
+\begin{letter}{}
+
+% Expéditeur en haut à gauche
+\noindent
+{{sender_address}}
+
+% Destinataire en haut à droite
+\begin{flushright}
+{{recipient_address}}
+\end{flushright}
+
+\begin{flushright}
+\today
+\end{flushright}
+
+% Objet de le lettre
+\noindent\textbf{Objet : {{subject}} }
+
+{{greeting}}
+
+{{introduction}}
+
+{{body}}
+
+{{conclusion}}
+
+{{closing}}
+
+\textbf{ {{signature}} }
+
+\end{letter}
+
+\end{document}

@@ -15,7 +15,7 @@ I am currently pursuing the **Master's degree in Machine Learning for Artificial
 * Currently working on Generative AI and Prompt Engineering
 * Looking for a full-time position from **November 2026**
 
-📄 **Curriculum Vitae** [](docs/CV_DataScience_AKIBODE.pdf)
+📄 **Curriculum Vitae**
 
 🔗 **LinkedIn**
 https://www.linkedin.com/in/yayrale-f-n-marie-france-akibode-04a329151/
@@ -37,6 +37,25 @@ Development of an R package implementing **Gaussian Mixture Models** for model-b
 * R Package Development
 
 Project: [r_package_mixturemodel](r_package_mixturemodel/)
+
+## CareerCopilot
+
+**Python · LLM · Mistral API · Playwright · SQLite · LLM Evaluation**
+
+AI-powered job search assistant designed to automate job offer collection, analysis and application customization.
+
+**Highlights**
+
+* Automated job offer collection with Playwright.
+* Structured job offer analysis using the Mistral API and Pydantic.
+* LLM tracing, retry handling and error tracking.
+* Evaluation framework using Precision, Recall and F1-score.
+* Prompt experimentation and comparison using a reference evaluation dataset.
+* LLM-as-a-judge in development for semantic evaluation of generated summaries.
+
+Project: [career_copilot](career_copilot/)
+
+**Status:** Work in progress.
 
 ---
 
