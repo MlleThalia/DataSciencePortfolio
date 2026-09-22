@@ -21,8 +21,10 @@ class ProfileBuilder:
             json_output=True,
         )
 
+        llm_response = response["llm_response"]
+
         logging.info(f"Candidate profile generated with success")
-        return CandidateProfile.model_validate(response)
+        return CandidateProfile.model_validate(llm_response)
     
     def _build_prompt(self, candidate_profile: str) -> str:
         return f"""

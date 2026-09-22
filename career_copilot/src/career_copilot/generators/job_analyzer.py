@@ -58,7 +58,7 @@ class JobAnalyzer:
             llm_response = response["llm_response"]
             llm_trace = response["trace"]
 
-            if "http_error" in llm_trace.errors or "json_decode_error" in llm_trace.errors :
+            if llm_trace.errors and("http_error" in llm_trace.errors or "json_decode_error" in llm_trace.errors) :
                 llm_calls.append(llm_trace)
                 time.sleep(1)
                 continue

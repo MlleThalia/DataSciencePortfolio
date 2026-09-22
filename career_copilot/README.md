@@ -251,8 +251,8 @@ The `.env` file must not be committed to the repository.
 - [x] Create an evaluation dataset
 - [x] Implement LLM tracing
 - [x] Compare multiple prompt versions
-- [ ] Implement LLM-as-a-judge for summary evaluation
-- [ ] Combine deterministic metrics and LLM judge results
+- [x] Implement LLM-as-a-judge for summary evaluation
+- [x] Combine deterministic metrics and LLM judge results
 - [ ] Implement automated regression testing
 - [ ] Expand the evaluation dataset
 - [ ] Track evaluation results across prompt and model versions

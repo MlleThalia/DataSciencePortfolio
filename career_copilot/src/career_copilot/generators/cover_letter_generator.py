@@ -23,8 +23,10 @@ class CoverLetterGenerator:
             json_output=True,
         )
 
+        llm_response = response["llm_response"]
+
         logger.info(f"Cover letter generated with success.")
-        return CoverLetter.model_validate(response)
+        return CoverLetter.model_validate(llm_response)
     
     def _build_prompt(
         self,
