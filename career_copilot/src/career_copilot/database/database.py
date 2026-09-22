@@ -18,6 +18,7 @@ class JobRepository:
         self._create_table()
     
     def save(self, job: JobOffer):
+        """Saves one job offer."""
         self.cursor.execute("""
             INSERT OR IGNORE INTO jobs (
                 id,
@@ -52,6 +53,7 @@ class JobRepository:
 
 
     def save_all(self, jobs: list[JobOffer]) -> int:
+        """Saves a list of job offers."""
         saved = 0
 
         for job in jobs:

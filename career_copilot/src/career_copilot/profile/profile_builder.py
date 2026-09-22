@@ -12,7 +12,7 @@ class ProfileBuilder:
         self.client = client
 
     def build_profile(self, candidate_profile: str, system_prompt: str)-> CandidateProfile:
-
+        """Builds a profile."""
         prompt = self._build_prompt(candidate_profile)
 
         response = self.client.generate(

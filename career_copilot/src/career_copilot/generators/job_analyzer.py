@@ -40,7 +40,7 @@ class JobAnalyzer:
         self.client = client
 
     def analyze(self, job : JobOffer, run : Run, system_prompt : str)-> JobAnalysis | str | None:
-
+        """Generates a job analysis."""
         prompt = self._build_prompt(job)
         llm_calls = []
         job_analysis = None

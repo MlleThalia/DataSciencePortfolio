@@ -15,6 +15,8 @@ class LinkedInCollector:
         location: str,
         limit: int = 20
     ) -> list[JobOffer]:
+        
+        """Collects job offers from BASE_URL"""
 
         jobs: list[JobOffer] = []
 

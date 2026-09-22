@@ -31,6 +31,7 @@ from career_copilot.generators.job_analyzer import JobAnalyzer
 from career_copilot.llm.mistral_client import MistralClient
 
 
+# loading evaluation dataset and ground_truth
 eval_dataset_path = "career_copilot/evaluation/eval_dataset.json" 
 ground_truth_path = "career_copilot/evaluation/ground_truth.json" 
 
@@ -95,6 +96,7 @@ def llm_judge(client : MistralClient, system_prompt: str):
             pass
 
 def predict(eval_datasets : list, system_prompt: str)->list[JobAnalysis]:
+    "Runs predictions on evaluation datasets"
     job_analyzer = JobAnalyzer(client=mistral_client)
     predicted_job_analysis = []
     for dataset in eval_datasets :
@@ -114,6 +116,7 @@ def predict(eval_datasets : list, system_prompt: str)->list[JobAnalysis]:
     return predicted_job_analysis
 
 def run_evaluate(ground_truth: list[Mapping[str, Any]], predicted: list[JobAnalysis])->list[Mapping[str, Any]]:
+    """Runs deterministic evaluation"""
     results = []
     for ground_truth_item in ground_truth :
         job_id = ground_truth_item["job_id"]

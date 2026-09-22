@@ -14,7 +14,7 @@ class ResumeGenerator:
         self.client = client
 
     def generate(self, analysis: JobAnalysis, candidate_profile: CandidateProfile, system_prompt: str)-> Resume:
-
+        """Generates a resume."""
         prompt = self._build_prompt(analysis, candidate_profile)
 
         response = self.client.generate(
