@@ -1,10 +1,10 @@
-from dataclasses import dataclass
+
 from typing import Optional
 from datetime import date
+from pydantic import BaseModel
 
 
-@dataclass
-class JobOffer:
+class JobOffer(BaseModel):
     id: str
     title: str
     company: str
