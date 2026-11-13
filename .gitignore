@@ -50,8 +50,8 @@ postman/
 logs/
 build/
 tests/
-ui/
 traces/
+generated_documents/
 electricity_demand_forecasting/
 
 # ======================

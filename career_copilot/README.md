@@ -1,156 +1,143 @@
 # CareerCopilot
 
-CareerCopilot is an AI-powered job search assistant designed to support and accelerate the job application process.
+**CareerCopilot** is an AI-powered job application assistant designed to help candidates analyze job opportunities, evaluate their compatibility with job requirements, and generate personalized application documents.
 
-The project aims to automate several stages of a job search workflow, from collecting job offers to analyzing them and generating tailored application documents.
-
-> **Project status:** Work in progress  
-> This repository currently focuses on job offer collection, LLM-based job analysis, prompt experimentation, and LLM evaluation. Additional application and API features are planned.
-
----
+The project combines Large Language Models (LLMs), structured information extraction, candidate evaluation, and automated document generation to streamline the job application process.
 
 ## Overview
 
-Searching and applying for jobs involves several repetitive tasks:
+CareerCopilot provides an end-to-end workflow for preparing job applications.
 
-- collecting relevant job offers;
-- extracting useful information from job descriptions;
-- identifying required skills and technologies;
-- adapting a candidate profile to a specific position;
-- generating tailored resumes and cover letters;
-- reviewing generated content before applying;
-- tracking applications.
+Users can:
+- Import a job offer in text format.
+- Extract and analyze job requirements using an LLM.
+- Upload their CV and extract a structured candidate profile.
+- Evaluate candidate-job compatibility through an AI-based scoring system.
+- Generate a personalized CV and a tailored cover letter.
+- Download the generated documents in PDF and LATEX format.
 
-CareerCopilot aims to bring these steps together into a single workflow while keeping the candidate in control of the final application.
+The application relies on structured outputs validated with Pydantic and uses LaTeX to generate professional PDF documents.
 
----
+## Features
 
-## Current Features
+### 1. Job Offer Analysis
 
-### Job offer collection
+- Import job descriptions from pasted text.
+- Convert job descriptions into structured `JobOffer` objects.
+- Analyze job requirements using the Mistral API.
+- Extract key information:
+  - Job summary
+  - Required skills
+  - Technologies
+  - Experience requirements
+  - Education requirements
+  - Languages
+  - Keywords
+- Validate structured outputs using Pydantic.
 
-CareerCopilot currently includes a LinkedIn collector based on Playwright.
+### 2. Candidate Profile Extraction
 
-The collector extracts information such as:
+- Upload a candidate CV in PDF format.
+- Extract personal and professional information using an LLM.
+- Build a structured `CandidateProfile` object.
+- Organize extracted information into:
+  - Personal information
+  - Professional summary
+  - Skills
+  - Work experience
+  - Education
+  - Projects
+  - Certifications
+  - Languages
+  - Extracurricular activities
 
-- job title;
-- company;
-- location;
-- contract type;
-- publication date;
-- description;
-- salary;
-- URL;
-- source.
+### 3. Compatibility Scoring
 
-Collected job offers are stored locally.
+Evaluate the compatibility between a candidate profile and a job offer.
 
-### Job analysis with LLMs
+The LLM generates:
+- Overall compatibility score.
+- Skills compatibility score.
+- Experience compatibility score.
+- Education compatibility score.
+- Main strengths.
+- Areas of improvement.
+- Overall evaluation summary.
 
-Job offers can be analyzed using an LLM through the Mistral API.
+### 4. Application Document Generation
 
-The analysis extracts structured information such as:
+Generate two personalized application documents:
 
-- summary;
-- skills;
-- technologies;
-- experience requirements;
-- education requirements;
-- languages;
-- keywords.
+- **Personalized CV:** adapts the candidate's existing profile to the requirements of the selected position.
+- **Cover Letter:** generates a tailored cover letter based on the candidate's profile and job analysis.
 
-The generated output is validated using Pydantic models.
+Document generation workflow:
 
-### Retry and tracing
+1. Generate structured document content using an LLM.
+2. Render the content into LaTeX templates.
+3. Compile LaTeX files into PDF documents.
+4. Provide PDF downloads through the Gradio interface.
 
-The LLM workflow includes basic reliability mechanisms:
+LaTeX source files are also retained for further editing.
 
-- retry handling;
-- HTTP error tracking;
-- JSON parsing error tracking;
-- Pydantic validation error tracking;
-- latency measurement;
-- token usage tracking;
-- individual LLM call tracing.
+### 5. LLM Reliability, Tracing and Evaluation
 
-Each execution can therefore retain information about the different attempts made during the generation process.
+- Structured output validation using Pydantic.
+- LLM request tracing.
+- Latency and token usage monitoring.
+- Prompt experimentation and comparison.
+- Evaluation datasets with reference outputs (ground truth).
+- Deterministic evaluation using Precision, Recall and F1-score.
+- LLM-as-a-Judge for semantic evaluation of generated summaries.
 
-### LLM evaluation
+## User Interface
 
-CareerCopilot includes an evaluation framework for measuring the quality of generated job analyses.
+CareerCopilot provides an interactive interface built with **Gradio Blocks**.
 
-The current evaluation approach combines:
+The application follows a sequential workflow:
 
-#### Deterministic evaluation
+1. Job offer import and analysis.
+2. Candidate CV upload and profile extraction.
+3. Candidate-job compatibility scoring.
+4. Personalized application document generation.
 
-Structured list fields are evaluated using:
-
-- Precision;
-- Recall;
-- F1-score.
-
-This currently applies to:
-
-- skills;
-- technologies;
-- languages;
-- keywords.
-
-The evaluation ignores the order of list elements.
-
-#### LLM-as-a-judge
-
-An LLM-based evaluator is being developed to evaluate fields where semantic similarity is more relevant than exact matching.
-
-The first target is the generated `summary`.
-
-The judge compares:
-
-- the reference summary (`ground truth`);
-- the generated summary (`prediction`).
-
-This approach is intended to complement deterministic metrics rather than replace them.
-
-### Prompt experimentation
-
-Different versions of prompts can be evaluated on the same evaluation dataset.
-
-The objective is to measure the impact of prompt modifications while keeping the evaluation conditions consistent.
-
----
+The interface displays the analysis results, candidate information, compatibility scores, and downloadable application documents.
 
 ## Project Structure
 
 ```text
 career_copilot/
-├── evaluation/
-│   ├── eval_dataset.json
-│   ├── ground_truth.json
-│   ├── evaluator.py
-│   ├── run_evaluation.py
-│   ├── reports/
-│   └── baseline.json
 │
 ├── src/
 │   └── career_copilot/
-│       ├── llm/
 │       ├── collectors/
 │       ├── database/
-│       ├── models/
-│       ├── renderers/
 │       ├── generators/
-│       └── profile/
+|       ├── llm/
+│       ├── models/
+|       ├── profile/
+│       ├── renderers/
+│       └── ui/
+│           └── features/
 │
-├── data/
+├── evaluation/
+│   ├── eval_dataset.json
+│   ├── ground_truth.json
+│   ├── deterministic_evaluator.py
+│   ├── llm_judge.py
+│   ├── run_evaluation.py
+│   ├── baseline.json
+│   └── reports/
 │
 ├── prompts/
-│   ├── profile/
-│   ├── job_analyzer/
-│   ├── resume/
-│   └── cover_letter/
-│
 ├── templates/
+├── data/
+├── generated_documents/
+├── tests/
+├── traces/
 │
+├── app.py
+├── .env
 ├── pyproject.toml
 ├── requirements.txt
 └── README.md
@@ -158,157 +145,133 @@ career_copilot/
 
 ## Tech Stack
 
-### Core
-
-- Python
-- Pydantic
-- SQLite
-- Requests
-
-### AI & LLM
-
-- Mistral API
-- Large Language Models (LLMs)
-- Prompt Engineering
-- LLM Evaluation
-
-### Data & Documents
-
-- pdfplumber
-- Jinja2
-- LaTeX
-
-### Automation
-
-- Playwright
-
-### Development
-
-- Git
-- GitHub
+| Category | Technologies |
+|---|---|
+| Programming | Python |
+| LLM | Mistral API |
+| Data validation | Pydantic |
+| User interface | Gradio Blocks |
+| Database | SQLite |
+| PDF processing | PDF extraction libraries |
+| Document generation | LaTeX, pdfLaTeX |
+| Web automation | Playwright |
+| LLM evaluation | Precision, Recall, F1-score, LLM-as-a-Judge |
+| Development | Git, GitHub |
 
 ## Installation
 
-### Clone the repository
+### 1. Clone the repository
 
 ```bash
-git clone <https://github.com/MlleThalia/DataSciencePortfolio>
-cd career_copilot
+git clone https://github.com/MlleThalia/DataSciencePortfolio.git
+cd DataSciencePortfolio/career_copilot
 ```
 
-### Create a virtual environment
+### 2. Create a virtual environment
 
 ```bash
 python -m venv .venv
 ```
 
-Activate the virtual environment:
+Activate the environment:
 
-#### Linux / macOS
-
+**Linux / macOS**
 ```bash
 source .venv/bin/activate
 ```
 
-#### Windows
-
+**Windows**
 ```bash
 .venv\Scripts\activate
 ```
 
-### Install dependencies
+### 3. Install Python dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Install Playwright browsers
+### 4. Install Playwright browsers
 
 ```bash
 playwright install
 ```
 
+### 5. Install LaTeX
+
+CareerCopilot uses `pdflatex` to compile generated LaTeX documents into PDFs.
+
+Install a LaTeX distribution according to your operating system:
+
+- **macOS:** MacTeX or BasicTeX.
+- **Linux:** TeX Live.
+- **Windows:** MiKTeX.
+
+On macOS, with Homebrew:
+
+```bash
+brew install --cask mactex-no-gui
+```
+
+Verify the installation:
+
+```bash
+pdflatex --version
+```
+
+Make sure `pdflatex` is accessible from your system PATH.
+
 ## Configuration
 
-CareerCopilot uses environment variables for API credentials and configuration.
-
-Create a `.env` file at the root of the project:
+Create a `.env` file at the project root:
 
 ```env
 MISTRALAI_API_URL=https://api.eu.mistral.ai/v1/chat/completions
 MISTRALAI_API_KEY=your_api_key
-MISTRAL_MODEL=ministral-14b-2512
+MISTRAL_MODEL=your_model
 MAX_RETRY=2
 ```
 
-The `.env` file must not be committed to the repository.
+Never commit API credentials to the repository.
 
-## Roadmap
+## Running the Application
 
-### LLM Evaluation
+Install the project in editable mode if required by your configuration:
 
-- [x] Implement Precision, Recall and F1-score
-- [x] Create an evaluation dataset
-- [x] Implement LLM tracing
-- [x] Compare multiple prompt versions
-- [x] Implement LLM-as-a-judge for summary evaluation
-- [x] Combine deterministic metrics and LLM judge results
-- [ ] Implement automated regression testing
-- [ ] Expand the evaluation dataset
-- [ ] Track evaluation results across prompt and model versions
+```bash
+pip install -e .
+```
 
-### Candidate Profile & Application Generation
+Launch the Gradio application from the project root:
 
-- [ ] Improve candidate profile extraction
-- [ ] Generate tailored resumes
-- [ ] Generate tailored cover letters
-- [ ] Render generated documents
-- [ ] Add human review before applications
-- [ ] Track applications
+```bash
+python app.py
+```
 
-### LLM & Retrieval
+## Project Milestones
 
-- [ ] Add Retrieval-Augmented Generation (RAG)
-- [ ] Explore Hugging Face tooling
-- [ ] Explore LangChain
-- [ ] Explore advanced LLM evaluation techniques
-- [ ] Explore agent and workflow architectures
-
-### API
-
-- [ ] Add a FastAPI API
-- [ ] Expose job collection and analysis services
-- [ ] Add API validation and authentication
-- [ ] Add automated API tests
-
-### Engineering & Production
-
-- [ ] Improve Docker support
-- [ ] Add CI/CD
-- [ ] Improve logging, tracing and observability
-- [ ] Add monitoring
-- [ ] Explore cloud deployment
-- [ ] Explore AWS
-
-### User Interface
-
-- [ ] Add a user interface for job offers
-- [ ] Add candidate profile management
-- [ ] Add human-in-the-loop review
-- [ ] Connect the UI to the API
+- [x] Job offer collection and SQLite storage.
+- [x] LLM-based job offer analysis.
+- [x] Structured output validation with Pydantic.
+- [x] Candidate CV extraction and profile structuring.
+- [x] Candidate-job compatibility scoring.
+- [x] Personalized CV generation.
+- [x] Cover letter generation.
+- [x] LaTeX document rendering and PDF compilation.
+- [x] LLM tracing and evaluation.
+- [x] Gradio interface.
+- [x] Integration of the application workflow.
+- [x] Final end-to-end testing and documentation.
 
 ## Project Goal
 
-The long-term goal of CareerCopilot is to build an AI-assisted job application workflow that automates repetitive tasks while keeping the candidate in control of the final application.
+CareerCopilot is a practical AI Engineering project focused on the development of an LLM-powered application.
 
-The project also serves as a practical environment for exploring production-oriented AI engineering concepts, including:
+It explores several important aspects of AI Engineering:
 
-- LLM evaluation
-- Prompt Engineering
-- Structured outputs
-- LLM tracing
-- API development
-- Testing
-- CI/CD
-- Monitoring
-- Deployment
+- Prompt engineering and LLM integration.
+- Structured information extraction.
+- Pydantic-based data validation.
+- LLM evaluation and monitoring.
+- Automated document generation.
+- Application development with Gradio.
