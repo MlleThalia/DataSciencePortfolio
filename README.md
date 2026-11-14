@@ -39,22 +39,24 @@ Project: [r_package_mixturemodel](r_package_mixturemodel/)
 
 ## CareerCopilot
 
-**Python · LLM · Mistral API · Playwright · SQLite · LLM Evaluation**
+**Python · Generative AI · Mistral API · Gradio · Pydantic · LaTeX · LLM Evaluation**
 
-AI-powered job search assistant designed to automate job offer collection, analysis and application customization.
+AI-powered job application assistant that analyzes job offers, evaluates candidate-job compatibility, and generates tailored application documents.
 
 **Highlights**
 
-* Automated job offer collection with Playwright.
-* Structured job offer analysis using the Mistral API and Pydantic.
-* LLM tracing, retry handling and error tracking.
-* Evaluation framework using Precision, Recall and F1-score.
-* Prompt experimentation and comparison using a reference evaluation dataset.
-* LLM-as-a-judge in development for semantic evaluation of generated summaries.
+- Structured job offer analysis using Mistral LLMs and Pydantic.
+- Candidate profile extraction from uploaded CVs.
+- LLM-based candidate-job compatibility assessment.
+- Automated generation of tailored CVs and cover letters.
+- LaTeX-based document rendering and automated PDF compilation.
+- LLM evaluation framework combining Precision, Recall, F1-score and LLM-as-a-Judge.
+- Prompt experimentation and comparison using a reference evaluation dataset.
+- LLM tracing and monitoring of execution metrics.
 
 Project: [career_copilot](career_copilot/)
 
-**Status:** Work in progress.
+**Status:** Completed.
 
 ---
 
