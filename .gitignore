@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.pytest_cache
 
 # ======================
 # Environnements
@@ -49,7 +50,7 @@ outputs/
 postman/
 logs/
 build/
-tests/
+career_copilot/tests/
 traces/
 generated_documents/
 electricity_demand_forecasting/

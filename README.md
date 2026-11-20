@@ -56,7 +56,24 @@ AI-powered job application assistant that analyzes job offers, evaluates candida
 
 Project: [career_copilot](career_copilot/)
 
-**Status:** Completed.
+## Comparative RAG
+
+**Python · RAG · ChromaDB · LangChain · LlamaIndex · Hugging Face · Mistral API · Gradio · Pytest**
+
+Comparative study of three approaches to building a Retrieval-Augmented Generation (RAG) pipeline for question answering over PDF documents.
+
+**Highlights**
+
+- Custom RAG pipeline implementation using Python and ChromaDB, without a dedicated RAG framework.
+- RAG pipeline development using LangChain and LlamaIndex.
+- PDF document loading, text chunking and embedding generation.
+- Semantic retrieval using vector databases.
+- Integration of Hugging Face embedding models and Mistral LLMs.
+- Interactive Gradio interface to select and test the three implementations.
+- Unit and integration tests using Pytest.
+- Comparative analysis of framework abstractions, architecture, flexibility and developer experience.
+
+Project: [comparative-rag](comparative-rag/)
 
 ---
 
