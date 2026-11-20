@@ -73,7 +73,7 @@ Comparative study of three approaches to building a Retrieval-Augmented Generati
 - Unit and integration tests using Pytest.
 - Comparative analysis of framework abstractions, architecture, flexibility and developer experience.
 
-Project: [comparative-rag](comparative-rag/)
+Project: [comparative_rag](comparative_rag/)
 
 ---
 
