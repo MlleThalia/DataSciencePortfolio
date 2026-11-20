@@ -1,0 +1,33 @@
+# Core
+python-dotenv==1.2.2
+
+# PDF processing
+pdfplumber==0.11.10
+
+# Vector database
+chromadb==1.5.9
+
+# LangChain
+langchain==1.5.0
+langchain-core==1.8.1
+langchain-chroma==1.1.0
+langchain-huggingface==1.2.3
+langchain-mistralai==1.2.0
+
+# LlamaIndex
+llama-index==0.14.26
+llama-index-core==0.14.26
+llama-index-embeddings-huggingface==0.9.0
+llama-index-llms-mistralai==0.12.0
+
+# Embeddings
+sentence-transformers==6.3.0
+
+# LLM
+mistralai==3.8.0
+
+# User interface
+gradio==6.31.0
+
+# Testing
+pytest==9.2.0
